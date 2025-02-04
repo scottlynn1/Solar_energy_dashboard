@@ -1,8 +1,24 @@
 import Chart from 'chart.js/auto'
 
+const params = new URLSearchParams({
+  'search': 'keyword',
+  'filter': 'category',
+  'sort': 'date'
+});
 
 setTimeout(function() {
-  console.log(document.getElementById('aquisitions'));
+  fetch("solarapi", {
+    method: "GET",
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+    }
+  }).then(response => response.json()).then(response => 
+    document.getElementById('data').innerText = JSON.stringify(response)
+  );
+}, 5000);
+
+
+setTimeout(function() {
 
   const data = [
     { year: 2010, count: 10 },
