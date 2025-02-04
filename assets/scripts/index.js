@@ -1,15 +1,21 @@
 import Chart from 'chart.js/auto'
 
 const params = new URLSearchParams({
-  'search': 'keyword',
-  'filter': 'category',
-  'sort': 'date'
+  "system_capacity": "900",
+  "module_type": "0",
+  "losses": "10",
+  "array_type": "1",
+  "tilt": "35",
+  "azimuth": "120",
+  "lat": "27",
+  "lon":"-82"
 });
 
 setTimeout(function() {
-  fetch("solarapi", {
+  fetch(`solarapi?${params}`, {
     method: "GET",
     headers: {
+      "accept": "application/json",
       "X-Requested-With": "XMLHttpRequest",
     }
   }).then(response => response.json()).then(response => 

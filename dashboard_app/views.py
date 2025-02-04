@@ -14,11 +14,19 @@ def solarapi(request):
 
   if is_ajax:
       if request.method == 'GET':
-
-        data = requests.get(f"https://developer.nrel.gov/api/pvwatts/v8.json?api_key={solar_api_key}&azimuth=180&system_capacity=4&losses=14&array_type=1&module_type=0&gcr=0.4&dc_ac_ratio=1.2&inv_eff=96.0&radius=0&dataset=nsrdb&tilt=10&address=boulder, co&soiling=12|4|45|23|9|99|67|12.54|54|9|0|7.6&albedo=0.3&bifaciality=0.7")
-
-  #params={"q": "language:python", "sort": "stars", "order": "desc"})
+        data = requests.get(
+          f"https://developer.nrel.gov/api/pvwatts/v8.json",
+          params={
+            "api_key": f"{solar_api_key}",
+            "system_capacity": request.GET.get('system_capacity'),
+            "module_type": request.GET.get('module_type'),
+            "losses": request.GET.get('losses'),
+            "array_type": request.GET.get('array_type'),
+            "tilt": request.GET.get('tilt'),
+            "azimuth": request.GET.get('azimuth'),
+            "lat": request.GET.get('lat'),
+            "lon": request.GET.get('lon')
+        })
         return HttpResponse(json.dumps(data.json()), content_type="application/json")
   else:
     print('Invalid request')
-  #return data.json()
