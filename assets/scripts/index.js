@@ -1,16 +1,36 @@
 import Chart from 'chart.js/auto'
 
-const params = new URLSearchParams({
-  "system_capacity": "900",
-  "module_type": "0",
-  "losses": "10",
-  "array_type": "1",
-  "tilt": "35",
-  "azimuth": "120",
-  "lat": "27",
-  "lon":"-82"
-});
+setTimeout(function() {
+  const form = document.getElementById('form');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const params = new URLSearchParams({
+      "system_capacity": data.get('system_capacity'),
+      "module_type": data.get('module_type'),
+      "losses": data.get('losses'),
+      "array_type": data.get('array_type'),
+      "tilt": data.get('tilt'),
+      "azimuth": data.get('azimuth'),
+      "lat": data.get('lat'),
+      "lon": data.get('lon')
+    });
+    fetch(`solarapi?${params}`, {
+      method: "GET",
+      headers: {
+        "accept": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      }
+    }).then(response => response.json()).then(
+      response => {
+        console.log(response)
+        document.getElementById('data').innerText = response.outputs.dc_monthly[0];
+      }
+    );
+  });
+}, 5000);
 
+/*
 setTimeout(function() {
   fetch(`solarapi?${params}`, {
     method: "GET",
@@ -22,6 +42,7 @@ setTimeout(function() {
     document.getElementById('data').innerText = JSON.stringify(response)
   );
 }, 5000);
+*/
 
 
 setTimeout(function() {
