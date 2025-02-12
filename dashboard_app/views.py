@@ -2,14 +2,18 @@ from django.shortcuts import render
 import os
 import requests
 import json
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import Voltagedata
-
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 solar_api_key = os.environ.get('solar_api_key')
 # Create your views here.
+
+@login_required(login_url='/login')
 def dashboard(request):
   return render(request, 'dashboard_app/dashboard.html')
 
+@login_required(login_url='/login')
 def solarapi(request):
   is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
@@ -41,6 +45,7 @@ def solarapi(request):
   else:
     print('Invalid request')
 
+@login_required(login_url='/login')
 def save(request):
   data = json.loads(request.body)
   print(data)
