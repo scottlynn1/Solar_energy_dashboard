@@ -67,9 +67,13 @@ form.addEventListener('submit', (e) => {
 
 save.addEventListener('click', (e) => {
   save.preventDefault;
-  const client = prompt('name of client: ')
-  const data = barchart.data.datasets[0].data;
-  const fulldata = {data, client}
+  const client = prompt('name of client: ');
+  const data = new FormData(form);
+  data.append('system_name', client);
+  const fulldata = {};
+  data.forEach((key, value)=>{
+    fulldata[value] = key;
+  })
   fetch('save', {
     method: "POST",
     body: JSON.stringify(fulldata),

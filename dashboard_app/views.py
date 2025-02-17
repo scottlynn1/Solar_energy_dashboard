@@ -3,7 +3,7 @@ import os
 import requests
 import json
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Voltagedata
+from .models import Sysdata
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 solar_api_key = os.environ.get('solar_api_key')
@@ -48,8 +48,18 @@ def solarapi(request):
 @login_required(login_url='/login')
 def save(request):
   data = json.loads(request.body)
-  print(data)
-  p = Voltagedata(client = data['client'], dc_voltage = data['data'])
+  p = Sysdata(
+    user = request.user.username,
+    system_name = data['system_name'],
+    system_capacity = data['system_capacity'],
+    module_type = data['module_type'],
+    losses = data['losses'],
+    array_type = data['array_type'],
+    tilt = data['tilt'],
+    azimuth = data['azimuth'],
+    lat = data['lat'],
+    lon = data['lon']
+  )
   p.save()
   return HttpResponse(json.dumps({'res': 'success'}), content_type="application/json")
 
