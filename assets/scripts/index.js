@@ -6,6 +6,7 @@ const barchart = new Chart(document.getElementById('acquisitions'), {type: "bar"
 const save = document.getElementById('save');
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
+
 function addData(chart, data) {
   data.forEach(row => {
     chart.data.labels.push(row.month);
@@ -67,6 +68,8 @@ form.addEventListener('submit', (e) => {
 
 save.addEventListener('click', (e) => {
   save.preventDefault;
+  const list = document.getElementById('system_name')
+  const newsys = document.createElement('option')
   const client = prompt('name of client: ');
   const data = new FormData(form);
   data.append('system_name', client);
@@ -82,5 +85,9 @@ save.addEventListener('click', (e) => {
       'content-type': 'application/json',
       'X-CSRFtoken': csrftoken,
     }
-  }).then(response => response.json()).then(response => console.log(response.systemlist));
+  }).then(response => response.json()).then(response => {
+  newsys.setAttribute('value', response.system);
+  newsys.innerText = response.system;
+  list.appendChild(newsys);
+});
 })

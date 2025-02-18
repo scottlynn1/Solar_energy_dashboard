@@ -67,10 +67,5 @@ def save(request):
     lon = data['lon']
   )
   p.save()
-  systems = Sysdata.objects.filter(user=request.user.username)
-  systemlist = []
-  for system in systems:
-    systemlist.append(system.system_name)
-  print(json.dumps({'systemlist': systemlist}))
-  return HttpResponse(json.dumps({'systemlist': systemlist}), content_type="application/json")
+  return HttpResponse(json.dumps({'system': data['system_name']}), content_type="application/json")
 
