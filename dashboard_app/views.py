@@ -11,7 +11,13 @@ solar_api_key = os.environ.get('solar_api_key')
 
 @login_required(login_url='/login')
 def dashboard(request):
-  return render(request, 'dashboard_app/dashboard.html')
+  systems = Sysdata.objects.filter(user=request.user.username)
+  systemlist = []
+  for system in systems:
+    systemlist.append(system.system_name)
+  return render(request, 'dashboard_app/dashboard.html', {
+    'systemlist': systemlist
+  })
 
 @login_required(login_url='/login')
 def solarapi(request):

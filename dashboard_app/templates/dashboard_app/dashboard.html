@@ -35,12 +35,23 @@
     <input type="number" id="lon" name="lon">
   </fieldset>
   <button type="submit">Submit</button>
+  <button type="button" id="save">Save</button>
 </form>
 
 <div id="data">Hello, World!</div>
 <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
-
-<button type="button" id="save">Save</button>
+<div id="dropdown">
+  <form id="systemlist">
+    <label for="system_name">System: </label>
+    <select name="system_name" id="system_name">
+    {% for system in systemlist %}
+      <option value='{{ system }}'>{{ system }}</option>
+    {% empty %}
+      <div>No Systems Saved</div>
+    {% endfor %}
+    </select>
+  </form>
+</div>
 <a href="{% url 'users:logout' %}">Log Out</a>
 
 {% endblock %}
