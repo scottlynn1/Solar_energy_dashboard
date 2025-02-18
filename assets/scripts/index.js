@@ -82,5 +82,5 @@ save.addEventListener('click', (e) => {
       'content-type': 'application/json',
       'X-CSRFtoken': csrftoken,
     }
-  }).then(response => response.json()).then(response => console.log(response.res));
+  }).then(response => response.json()).then(response => console.log(response.systemlist));
 })
