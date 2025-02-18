@@ -24,32 +24,63 @@ def solarapi(request):
   is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
   if is_ajax:
-      if request.method == 'GET':
-        data = requests.get(
-          f"https://developer.nrel.gov/api/pvwatts/v8.json",
-          params={
-            "api_key": f"{solar_api_key}",
-            "system_capacity": request.GET.get('system_capacity'),
-            "module_type": request.GET.get('module_type'),
-            "losses": request.GET.get('losses'),
-            "array_type": request.GET.get('array_type'),
-            "tilt": request.GET.get('tilt'),
-            "azimuth": request.GET.get('azimuth'),
-            "lat": request.GET.get('lat'),
-            "lon": request.GET.get('lon')
-        }).json()
-        poa_monthly = data['outputs']['poa_monthly']
-        dc_monthly = data['outputs']['dc_monthly']
-        ac_monthly = data['outputs']['ac_monthly']
-        solrad_monthly = data['outputs']['solrad_monthly']
-        solrad_annual = data['outputs']['solrad_annual']
-        ac_annual = data['outputs']['ac_annual']
-        capacity_factor = data['outputs']['capacity_factor']
-        info = {'poa_monthly': poa_monthly, 'dc_monthly': dc_monthly, 'ac_monthly': ac_monthly, 'solrad_monthly': solrad_monthly, 'solrad_annual': solrad_annual, 'ac_annual': ac_annual, 'capacity_factor': capacity_factor}
-        print(info)
-        return HttpResponse(json.dumps(info), content_type="application/json")
+    if request.method == 'GET':
+      data = requests.get(
+        f"https://developer.nrel.gov/api/pvwatts/v8.json",
+        params={
+          "api_key": f"{solar_api_key}",
+          "system_capacity": request.GET.get('system_capacity'),
+          "module_type": request.GET.get('module_type'),
+          "losses": request.GET.get('losses'),
+          "array_type": request.GET.get('array_type'),
+          "tilt": request.GET.get('tilt'),
+          "azimuth": request.GET.get('azimuth'),
+          "lat": request.GET.get('lat'),
+          "lon": request.GET.get('lon')
+      }).json()
+      poa_monthly = data['outputs']['poa_monthly']
+      dc_monthly = data['outputs']['dc_monthly']
+      ac_monthly = data['outputs']['ac_monthly']
+      solrad_monthly = data['outputs']['solrad_monthly']
+      solrad_annual = data['outputs']['solrad_annual']
+      ac_annual = data['outputs']['ac_annual']
+      capacity_factor = data['outputs']['capacity_factor']
+      info = {'poa_monthly': poa_monthly, 'dc_monthly': dc_monthly, 'ac_monthly': ac_monthly, 'solrad_monthly': solrad_monthly, 'solrad_annual': solrad_annual, 'ac_annual': ac_annual, 'capacity_factor': capacity_factor}
+      return HttpResponse(json.dumps(info), content_type="application/json")
   else:
     print('Invalid request')
+
+@login_required(login_url='/login')
+def retrieve(request):
+  is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+  if is_ajax:
+    if request.method == 'GET':
+      system = Sysdata.objects.get(system_name=request.GET.get('system_name'))
+      data = requests.get(
+        f"https://developer.nrel.gov/api/pvwatts/v8.json",
+        params={
+          "api_key": f"{solar_api_key}",
+          "system_capacity": system.system_capacity,
+          "module_type": system.module_type,
+          "losses": system.losses,
+          "array_type": system.array_type,
+          "tilt": system.tilt,
+          "azimuth": system.azimuth,
+          "lat": system.lat,
+          "lon": system.lon
+        }).json()
+      poa_monthly = data['outputs']['poa_monthly']
+      dc_monthly = data['outputs']['dc_monthly']
+      ac_monthly = data['outputs']['ac_monthly']
+      solrad_monthly = data['outputs']['solrad_monthly']
+      solrad_annual = data['outputs']['solrad_annual']
+      ac_annual = data['outputs']['ac_annual']
+      capacity_factor = data['outputs']['capacity_factor']
+      info = {'poa_monthly': poa_monthly, 'dc_monthly': dc_monthly, 'ac_monthly': ac_monthly, 'solrad_monthly': solrad_monthly, 'solrad_annual': solrad_annual, 'ac_annual': ac_annual, 'capacity_factor': capacity_factor}
+      print(info)
+      return HttpResponse(json.dumps(info), content_type="application/json")
+  else:
+      print("Invalid request")
 
 @login_required(login_url='/login')
 def save(request):

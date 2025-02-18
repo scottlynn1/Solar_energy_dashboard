@@ -40,16 +40,18 @@
 
 <div id="data">Hello, World!</div>
 <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
-<div id="dropdown">
-  <form id="systemlist">
+<div>
+  <form id="retrieve">
     <label for="system_name">System: </label>
     <select name="system_name" id="system_name">
+      <option value="">Choose a System</option>
     {% for system in systemlist %}
       <option value='{{ system }}'>{{ system }}</option>
     {% empty %}
       <div>No Systems Saved</div>
     {% endfor %}
     </select>
+    <button type="submit">Retrieve</button>
   </form>
 </div>
 <a href="{% url 'users:logout' %}">Log Out</a>

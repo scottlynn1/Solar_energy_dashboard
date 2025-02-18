@@ -7,4 +7,5 @@ urlpatterns = [
   path("", views.dashboard, name="dashboard"),
   path("solarapi", views.solarapi, name="solarapi"),
   path("save", views.save, name="save"),
+  path('retrieve', views.retrieve, name='retrieve'),
 ]
