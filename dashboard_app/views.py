@@ -55,6 +55,7 @@ def retrieve(request):
   is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
   if is_ajax:
     if request.method == 'GET':
+      #add logic to restrict lookup to users saved configs
       system = Sysdata.objects.get(system_name=request.GET.get('system_name'))
       data = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
@@ -79,6 +80,11 @@ def retrieve(request):
       info = {'poa_monthly': poa_monthly, 'dc_monthly': dc_monthly, 'ac_monthly': ac_monthly, 'solrad_monthly': solrad_monthly, 'solrad_annual': solrad_annual, 'ac_annual': ac_annual, 'capacity_factor': capacity_factor}
       print(info)
       return HttpResponse(json.dumps(info), content_type="application/json")
+    elif request.method == "DELETE":
+      system_name = request.GET.get('system_name')
+      #add logic to restrict deletion to users saved configs
+      Sysdata.objects.get(system_name=system_name).delete()
+      return HttpResponse(json.dumps({'response': 'configuration deleted successfully'}), content_type="application/json")
   else:
       print("Invalid request")
 

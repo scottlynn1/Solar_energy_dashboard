@@ -4,6 +4,7 @@ import Chart from 'chart.js/auto'
 const form = document.getElementById('form');
 const barchart = new Chart(document.getElementById('acquisitions'), {type: "bar", data: {labels: [], datasets: [{label: "DC Production by Month", data: []}]}})
 const save = document.getElementById('save');
+const deleteconfig = document.getElementById('deleteconfig');
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 const retrieve = document.getElementById('retrieve');
 
@@ -119,5 +120,25 @@ retrieve.addEventListener('submit', (e) => {
     ];
     clearChart(barchart);
     addData(barchart, solardata);
+  });
+});
+
+deleteconfig.addEventListener('click', (e) => {
+  e.preventDefault();
+  const system_name = document.getElementById('system_name');
+  fetch(`retrieve?system_name=${system_name.value}`, {
+    method: "DELETE",
+    headers: {
+      "accept": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+      'X-CSRFtoken': csrftoken,
+    }
+  }).then(response => response.json()).then(response => {
+    console.log(response.response);
+    for (var i=0; i<system_name.length; i++) {
+      if (system_name.options[i].value == system_name.value)
+          system_name.remove(i);
+    }
+    clearChart(barchart);
   });
 });

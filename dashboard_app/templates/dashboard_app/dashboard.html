@@ -39,7 +39,9 @@
 </form>
 
 <div id="data">Hello, World!</div>
+
 <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
+
 <div>
   <form id="retrieve">
     <label for="system_name">System: </label>
@@ -52,6 +54,7 @@
     {% endfor %}
     </select>
     <button type="submit">Retrieve</button>
+    <button type="button" id="deleteconfig">Delete</button>
   </form>
 </div>
 <a href="{% url 'users:logout' %}">Log Out</a>
