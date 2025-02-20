@@ -13,3 +13,8 @@ class Sysdata(models.Model):
   azimuth = models.CharField(max_length=100)
   lat = models.CharField(max_length=100)
   lon = models.CharField(max_length=100)
+
+  class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'system_name'], name='no duplicate sysnames per user')
+        ]
