@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Sysdata
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.db.utils import IntegrityError
 solar_api_key = os.environ.get('solar_api_key')
 # Create your views here.
 
@@ -55,7 +56,6 @@ def retrieve(request):
   is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
   if is_ajax:
     if request.method == 'GET':
-      #add logic to restrict lookup to users saved configs
       system = Sysdata.objects.get(system_name=request.GET.get('system_name'), user=request.user.username)
       data = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
@@ -82,7 +82,6 @@ def retrieve(request):
       return HttpResponse(json.dumps(info), content_type="application/json")
     elif request.method == "DELETE":
       system_name = request.GET.get('system_name')
-      #add logic to restrict deletion to users saved configs
       Sysdata.objects.get(system_name=system_name, user=request.user.username).delete()
       return HttpResponse(json.dumps({'response': 'configuration deleted successfully'}), content_type="application/json")
   else:
@@ -91,6 +90,7 @@ def retrieve(request):
 @login_required(login_url='/login')
 def save(request):
   data = json.loads(request.body)
+
   p = Sysdata(
     user = request.user.username,
     system_name = data['system_name'],
@@ -103,6 +103,9 @@ def save(request):
     lat = data['lat'],
     lon = data['lon']
   )
-  p.save()
+  try:
+    p.save()
+  except IntegrityError:
+    return HttpResponse(json.dumps({'response': 'system name already exists'}))
   return HttpResponse(json.dumps({'system': data['system_name']}), content_type="application/json")
 

@@ -69,8 +69,7 @@ form.addEventListener('submit', (e) => {
 
 save.addEventListener('click', (e) => {
   save.preventDefault;
-  const list = document.getElementById('system_name')
-  const newsys = document.createElement('option')
+  const list = document.getElementById('system_name');
   const client = prompt('name of client: ');
   const data = new FormData(form);
   data.append('system_name', client);
@@ -87,10 +86,16 @@ save.addEventListener('click', (e) => {
       'X-CSRFtoken': csrftoken,
     }
   }).then(response => response.json()).then(response => {
-  newsys.setAttribute('value', response.system);
-  newsys.innerText = response.system;
-  list.appendChild(newsys);
-});
+    if (response.response === "system name already exists") {
+      alert('system name already exists');
+    }
+    else {
+      const newsys = document.createElement('option');
+      newsys.setAttribute('value', response.system);
+      newsys.innerText = response.system;
+      list.appendChild(newsys);
+    }
+  });
 })
 
 retrieve.addEventListener('submit', (e) => {

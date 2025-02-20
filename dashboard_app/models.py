@@ -3,7 +3,6 @@ from django.db import models
 # Create your models here.
 class Sysdata(models.Model):
   user = models.CharField(max_length=64)
-  # add logic for uniqueness and error handing in view
   system_name = models.CharField(max_length=100)
   system_capacity = models.CharField(max_length=100)
   module_type = models.CharField(max_length=100)
