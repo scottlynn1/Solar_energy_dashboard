@@ -77,8 +77,8 @@ def retrieve(request):
       solrad_annual = data['outputs']['solrad_annual']
       ac_annual = data['outputs']['ac_annual']
       capacity_factor = data['outputs']['capacity_factor']
-      info = {'poa_monthly': poa_monthly, 'dc_monthly': dc_monthly, 'ac_monthly': ac_monthly, 'solrad_monthly': solrad_monthly, 'solrad_annual': solrad_annual, 'ac_annual': ac_annual, 'capacity_factor': capacity_factor}
-      # add logic to repopulate form with system config data
+      info = {'output': {'poa_monthly': poa_monthly, 'dc_monthly': dc_monthly, 'ac_monthly': ac_monthly, 'solrad_monthly': solrad_monthly, 'solrad_annual': solrad_annual, 'ac_annual': ac_annual, 'capacity_factor': capacity_factor},
+              'sysdata': {'system_capacity': system.system_capacity, 'module_type': system.module_type, 'losses': system.losses, 'array_type': system.array_type, 'tilt': system.tilt, 'azimuth': system.azimuth, 'lat': system.lat, 'lon': system.lon}}
       return HttpResponse(json.dumps(info), content_type="application/json")
     elif request.method == "DELETE":
       system_name = request.GET.get('system_name')

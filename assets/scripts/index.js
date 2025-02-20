@@ -109,22 +109,25 @@ retrieve.addEventListener('submit', (e) => {
     }
   }).then(response => response.json()).then(returndata => {
     console.log(returndata);
-    const solardata = [
-      { month: 'jan', kWh: returndata.dc_monthly[0] },
-      { month: 'feb', kWh: returndata.dc_monthly[1] },
-      { month: 'mar', kWh: returndata.dc_monthly[2] },
-      { month: 'apr', kWh: returndata.dc_monthly[3] },
-      { month: 'may', kWh: returndata.dc_monthly[4] },
-      { month: 'jun', kWh: returndata.dc_monthly[5] },
-      { month: 'jul', kWh: returndata.dc_monthly[6] },
-      { month: 'aug', kWh: returndata.dc_monthly[7] },
-      { month: 'sep', kWh: returndata.dc_monthly[8] },
-      { month: 'oct', kWh: returndata.dc_monthly[9] },
-      { month: 'nov', kWh: returndata.dc_monthly[10] },
-      { month: 'dec', kWh: returndata.dc_monthly[11] },
+    const output = [
+      { month: 'jan', kWh: returndata.output.dc_monthly[0] },
+      { month: 'feb', kWh: returndata.output.dc_monthly[1] },
+      { month: 'mar', kWh: returndata.output.dc_monthly[2] },
+      { month: 'apr', kWh: returndata.output.dc_monthly[3] },
+      { month: 'may', kWh: returndata.output.dc_monthly[4] },
+      { month: 'jun', kWh: returndata.output.dc_monthly[5] },
+      { month: 'jul', kWh: returndata.output.dc_monthly[6] },
+      { month: 'aug', kWh: returndata.output.dc_monthly[7] },
+      { month: 'sep', kWh: returndata.output.dc_monthly[8] },
+      { month: 'oct', kWh: returndata.output.dc_monthly[9] },
+      { month: 'nov', kWh: returndata.output.dc_monthly[10] },
+      { month: 'dec', kWh: returndata.output.dc_monthly[11] },
     ];
+    [...form.elements].forEach(element => {
+      element.value = returndata.sysdata[element.id];
+    })
     clearChart(barchart);
-    addData(barchart, solardata);
+    addData(barchart, output);
   });
 });
 
