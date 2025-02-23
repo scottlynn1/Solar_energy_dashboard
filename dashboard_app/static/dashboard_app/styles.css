@@ -2,10 +2,22 @@ body {
   background-color: rgb(189, 88, 70);
 }
 
-h1 {
-  color: darkgreen;
+.barchart {
+  width: 1000px;
 }
 
-#data {
-  overflow-wrap: break-word;
+.main_cont {
+  display: flex;
+  flex-direction: row
+}
+
+.sub_cont {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sub_cont div {
+  text-align: center;
 }

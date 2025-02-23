@@ -4,43 +4,65 @@
 {% csrf_token %}
 
 <form id="form">
-  <label for="system_capacity">system capacity: </label>
-  <input type="number" id="system_capacity" name="system_capacity">
-  <label for="module_type">module type: </label>
-  <select name="module_type" id="module_type">
-    <option value="0">Standard</option>
-    <option value="1">Premium</option>
-    <option value="2">Thin Film</option>
-  </select>
-  <label for="losses">losses: </label>
-  <input type="number" id="losses" name="losses">
-  <label for="array_type">array type: </label>
-  <select name="array_type" id="array_type">
-    <option value="0">Fixed - Open Rack</option>
-    <option value="1">Fized - Roof Mounted</option>
-    <option value="2">1-Axis</option>
-    <option value="3">1-Axis Backtracking</option>
-    <option value="4">2-Axis</option>
-  </select>
-  <fieldset>
-    <label for="tilt">Tilt: </label>
-    <input type="number" id="tilt" name="tilt">
-    <label for="azimuth">Azimuth: </label>
-    <input type="number" id="azimuth" name="azimuth">
-  </fieldset>
-  <fieldset>
-    <label for="lat">Latitude: </label>
-    <input type="number" id="lat" name="lat">
-    <label for="lon">Longitude:</label>
-    <input type="number" id="lon" name="lon">
-  </fieldset>
+  <div class="main_cont">
+    <div class="sub_cont">
+      <div>
+        <label for="system_capacity">system capacity: </label>
+        <input type="number" min="0" max="500000" step="50" id="system_capacity" name="system_capacity">
+      </div>
+      <div>
+        <label for="module_type">module type: </label>
+        <select name="module_type" id="module_type">
+          <option value="0">Standard</option>
+          <option value="1">Premium</option>
+          <option value="2">Thin Film</option>
+        </select>
+      </div>
+    </div>
+    <div class="sub_cont">
+      <div>
+        <label for="losses">losses: </label>
+        <input type="number" min="-5" max='95' id="losses" name="losses">
+      </div>
+      <div>
+        <label for="array_type">array type: </label>
+        <select name="array_type" id="array_type">
+          <option value="0">Fixed - Open Rack</option>
+          <option value="1">Fixed - Roof Mounted</option>
+          <option value="2">1-Axis</option>
+          <option value="3">1-Axis Backtracking</option>
+          <option value="4">2-Axis</option>
+        </select>
+      </div>
+    </div>
+    <div class="sub_cont">
+      <div>
+        <label for="tilt">Tilt: </label>
+        <input type="number" min="0" max="90" id="tilt" name="tilt">
+      </div>
+      <div>
+        <label for="azimuth">Azimuth: </label>
+        <input type="number" min="0" max="359" id="azimuth" name="azimuth">
+      </div>
+    </div>
+    <div class="sub_cont">
+      <div>
+        <label for="lat">Latitude: </label>
+        <input type="number" min="-90" max="90" id="lat" name="lat">
+      </div>
+      <div>
+        <label for="lon">Longitude:</label>
+        <input type="number" min="-180" max="180" id="lon" name="lon">
+      </div>
+    </div>
+  </div>
   <button type="submit">Submit</button>
   <button type="button" id="save">Save</button>
 </form>
 
 <div id="data">Hello, World!</div>
 
-<div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
+<div class="barchart"><canvas id="acquisitions"></canvas></div>
 
 <div>
   <form id="retrieve">

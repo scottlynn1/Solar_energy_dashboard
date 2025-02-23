@@ -8,7 +8,6 @@ const deleteconfig = document.getElementById('deleteconfig');
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 const retrieve = document.getElementById('retrieve');
 
-
 function addData(chart, data) {
   data.forEach(row => {
     chart.data.labels.push(row.month);
@@ -108,7 +107,6 @@ retrieve.addEventListener('submit', (e) => {
       "X-Requested-With": "XMLHttpRequest",
     }
   }).then(response => response.json()).then(returndata => {
-    console.log(returndata);
     const output = [
       { month: 'jan', kWh: returndata.output.dc_monthly[0] },
       { month: 'feb', kWh: returndata.output.dc_monthly[1] },
@@ -142,7 +140,6 @@ deleteconfig.addEventListener('click', (e) => {
       'X-CSRFtoken': csrftoken,
     }
   }).then(response => response.json()).then(response => {
-    console.log(response.response);
     for (var i=0; i<system_name.length; i++) {
       if (system_name.options[i].value == system_name.value)
           system_name.remove(i);
