@@ -17,7 +17,8 @@ def dashboard(request):
   for system in systems:
     systemlist.append(system.system_name)
   return render(request, 'dashboard_app/dashboard.html', {
-    'systemlist': systemlist
+    'systemlist': systemlist,
+    'user': request.user.username,
   })
 
 @login_required(login_url='/login')

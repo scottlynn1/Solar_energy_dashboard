@@ -2,13 +2,11 @@ body {
   background-color: rgb(189, 88, 70);
 }
 
-.barchart {
-  width: 1000px;
-}
 
 .main_cont {
   display: flex;
-  flex-direction: row
+  flex-direction: row;
+  max-width: 1000px;
 }
 
 .sub_cont {
@@ -20,4 +18,27 @@ body {
 
 .sub_cont div {
   text-align: center;
+}
+
+
+.data_cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.barchart {
+  flex: 1;
+  max-width: 1000px;
+  min-width: 500px;
+}
+
+.annual_cont {
+  display: flex;
+
+  flex: 1;
+}
+
+.annual_cont div {
+  flex: 1;
 }

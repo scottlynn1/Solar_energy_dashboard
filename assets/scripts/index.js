@@ -7,6 +7,8 @@ const save = document.getElementById('save');
 const deleteconfig = document.getElementById('deleteconfig');
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 const retrieve = document.getElementById('retrieve');
+const ac_annual = document.getElementById('ac_annual');
+const solrad_annual = document.getElementById('solrad_annual');
 
 function addData(chart, data) {
   data.forEach(row => {
@@ -124,6 +126,10 @@ retrieve.addEventListener('submit', (e) => {
     [...form.elements].forEach(element => {
       element.value = returndata.sysdata[element.id];
     })
+    ac_annual.textContent = 'Annual AC Production: ';
+    solrad_annual.textContent = 'Annual Solar Radiation: ';
+    ac_annual.textContent = ac_annual.textContent + Math.round(returndata.output.ac_annual);
+    solrad_annual.textContent = solrad_annual.textContent + Math.round(returndata.output.solrad_annual);
     clearChart(barchart);
     addData(barchart, output);
   });

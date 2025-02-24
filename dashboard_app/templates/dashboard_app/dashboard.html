@@ -2,7 +2,7 @@
 
 {% block body %}
 {% csrf_token %}
-
+<p>Hello, {{user}}!</p>
 <form id="form">
   <div class="main_cont">
     <div class="sub_cont">
@@ -60,9 +60,22 @@
   <button type="button" id="save">Save</button>
 </form>
 
-<div id="data">Hello, World!</div>
+<div class="data_cont">
+  <div class="barchart">
+    <canvas id="acquisitions"></canvas>
+  </div>
+  <div id="annual_cont">
+    <div>
+      <p id="ac_annual">Annual AC production: </p>
+    </div>
+    <div>
+      <p id="solrad_annual">Annual Solar Radiation: </p>
+    </div>
+    <div>
 
-<div class="barchart"><canvas id="acquisitions"></canvas></div>
+    </div>
+  </div>
+</div>
 
 <div>
   <form id="retrieve">
