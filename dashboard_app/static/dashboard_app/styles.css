@@ -2,7 +2,7 @@ body {
   background-color: rgb(189, 88, 70);
 }
 
-
+/* container for main form */
 .main_cont {
   display: flex;
   flex-direction: row;
@@ -19,26 +19,35 @@ body {
 .sub_cont div {
   text-align: center;
 }
+/*  */
 
-
+/* container for chart and annual data */
 .data_cont {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  align-items: stretch;
+  justify-content: start;
+}
+
+.data_cont div {
+  flex: 1, 1, auto;
 }
 
 .barchart {
-  flex: 1;
+  width: 100%;
   max-width: 1000px;
-  min-width: 500px;
+  min-width: 300px;
+  min-height: 0;
+  height: auto;
+  aspect-ratio: 16 / 9;
 }
 
 .annual_cont {
   display: flex;
-
-  flex: 1;
+  flex-direction: column;
 }
 
 .annual_cont div {
   flex: 1;
+  text-align: center;
 }
+/*  */

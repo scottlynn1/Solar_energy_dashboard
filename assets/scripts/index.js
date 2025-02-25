@@ -2,7 +2,15 @@ import Chart from 'chart.js/auto'
 
 
 const form = document.getElementById('form');
-const barchart = new Chart(document.getElementById('acquisitions'), {type: "bar", data: {labels: [], datasets: [{label: "DC Production by Month", data: []}]}})
+
+const barchart = new Chart(document.getElementById('acquisitions'), {
+  type: "bar", 
+  data: {labels: [], datasets: [{label: "DC Production by Month", data: []}]},
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,}
+  });
+
 const save = document.getElementById('save');
 const deleteconfig = document.getElementById('deleteconfig');
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
