@@ -1,6 +1,5 @@
 import Chart from 'chart.js/auto'
 
-
 const form = document.getElementById('form');
 
 const barchart = new Chart(document.getElementById('acquisitions'), {
@@ -39,6 +38,7 @@ function clearChart(chart) {
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
+  optimizeddata.querySelector('span').textContent = '';
   const formdata = new FormData(form);
   const params = new URLSearchParams({
     "system_capacity": formdata.get('system_capacity'),
@@ -71,6 +71,10 @@ form.addEventListener('submit', (e) => {
       { month: 'nov', kWh: returndata.dc_monthly[10] },
       { month: 'dec', kWh: returndata.dc_monthly[11] },
     ];
+    ac_annual.querySelector('span').textContent = '';
+    solrad_annual.querySelector('span').textContent = '';
+    ac_annual.querySelector('span').textContent = Math.round(returndata.ac_annual);
+    solrad_annual.querySelector('span').textContent = Math.round(returndata.solrad_annual);
     clearChart(barchart);
     addData(barchart, solardata);
   });
@@ -109,6 +113,7 @@ save.addEventListener('click', (e) => {
 
 retrieve.addEventListener('submit', (e) => {
   e.preventDefault();
+  optimizeddata.querySelector('span').textContent = '';
   const system_name = document.getElementById('system_name');
   fetch(`retrieve?system_name=${system_name.value}`, {
     method: "GET",
@@ -134,10 +139,10 @@ retrieve.addEventListener('submit', (e) => {
     [...form.elements].forEach(element => {
       element.value = returndata.sysdata[element.id];
     })
-    ac_annual.textContent = 'Annual AC Production: ';
-    solrad_annual.textContent = 'Annual Solar Radiation: ';
-    ac_annual.textContent = ac_annual.textContent + Math.round(returndata.output.ac_annual);
-    solrad_annual.textContent = solrad_annual.textContent + Math.round(returndata.output.solrad_annual);
+    ac_annual.querySelector('span').textContent = '';
+    solrad_annual.querySelector('span').textContent = '';
+    ac_annual.querySelector('span').textContent = Math.round(returndata.output.ac_annual);
+    solrad_annual.querySelector('span').textContent = Math.round(returndata.output.solrad_annual);
     clearChart(barchart);
     addData(barchart, output);
   });
@@ -145,6 +150,7 @@ retrieve.addEventListener('submit', (e) => {
 
 deleteconfig.addEventListener('click', (e) => {
   e.preventDefault();
+  optimizeddata.querySelector('span').textContent = '';
   const system_name = document.getElementById('system_name');
   fetch(`retrieve?system_name=${system_name.value}`, {
     method: "DELETE",
@@ -159,5 +165,36 @@ deleteconfig.addEventListener('click', (e) => {
           system_name.remove(i);
     }
     clearChart(barchart);
+  });
+});
+
+const optimizeoutput = document.getElementById('optimizeoutput');
+const optimizeddata = document.getElementById('optimizeddata');
+const loadingsign = document.getElementById('loadingsign');
+optimizeoutput.addEventListener('click', (e) => {
+  e.preventDefault();
+  loadingsign.className = "loadingshow";
+  const formdata = new FormData(form);
+  const params = new URLSearchParams({
+    "system_capacity": formdata.get('system_capacity'),
+    "module_type": formdata.get('module_type'),
+    "losses": formdata.get('losses'),
+    "array_type": formdata.get('array_type'),
+    "tilt": formdata.get('tilt'),
+    "azimuth": formdata.get('azimuth'),
+    "lat": formdata.get('lat'),
+    "lon": formdata.get('lon'),
+    "ac_annual": ac_annual.querySelector('span').textContent,
+  });
+  fetch(`optimize?${params}`, {
+    method: "GET",
+    headers: {
+      "accept": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+    }
+  }).then(response => response.json()).then(returndata => {
+    loadingsign.className = "loadinghide"
+    console.log(returndata.optimal_ac_annual);
+    optimizeddata.querySelector('span').textContent = `${Math.round(returndata.optimal_ac_annual)} for ${returndata.optimal_tilt} degrees tilt`
   });
 });

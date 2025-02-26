@@ -66,13 +66,16 @@
   </div>
   <div class="annual_cont">
     <div>
-      <p id="ac_annual">Annual AC production: </p>
+      <p id="ac_annual">Annual AC production: <span></span> </p>
     </div>
     <div>
-      <p id="solrad_annual">Annual Solar Radiation: </p>
+      <p id="solrad_annual">Annual Solar Radiation: <span></span></p>
     </div>
     <div>
-      <p id="capacity_factor">Capacity Factor: </p>
+      <p id="capacity_factor">Capacity Factor: <span></span></p>
+    </div>
+    <div>
+      <p id="optimizeddata">Optimized Tilt and Annual AC ouput: <span></span><div id="loadingsign" class="loadinghide"></div></p>
     </div>
   </div>
 </div>
@@ -90,6 +93,7 @@
     </select>
     <button type="submit">Retrieve</button>
     <button type="button" id="deleteconfig">Delete</button>
+    <button type="button" id="optimizeoutput">Optimize</button>
   </form>
 </div>
 <a href="{% url 'users:logout' %}">Log Out</a>

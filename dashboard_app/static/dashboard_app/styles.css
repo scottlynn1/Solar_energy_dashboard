@@ -28,9 +28,7 @@ body {
   justify-content: start;
 }
 
-.data_cont div {
-  flex: 1, 1, auto;
-}
+
 
 .barchart {
   width: 100%;
@@ -51,3 +49,26 @@ body {
   text-align: center;
 }
 /*  */
+
+.loadingshow {
+  width: 2rem;
+  height: 2rem;
+  border: 5px solid #f3f3f3;
+  border-top: 6px solid #925ac7;
+  border-radius: 50%;
+  margin: auto;
+  animation: spin 1s infinite linear;
+}
+
+.loadinghid {
+  display: none;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

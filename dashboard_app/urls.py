@@ -8,4 +8,5 @@ urlpatterns = [
   path("solarapi", views.solarapi, name="solarapi"),
   path("save", views.save, name="save"),
   path('retrieve', views.retrieve, name='retrieve'),
+  path('optimize', views.optimize, name='optimize'),
 ]

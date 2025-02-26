@@ -110,3 +110,36 @@ def save(request):
     return HttpResponse(json.dumps({'response': 'system name already exists'}))
   return HttpResponse(json.dumps({'system': data['system_name']}), content_type="application/json")
 
+@login_required(login_url='/login')
+def optimize(request):
+  is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+  if is_ajax:
+    if request.method == 'GET':
+      ac_annual = int(request.GET.get('ac_annual'))
+      print(ac_annual)
+      new_ac_annual = ac_annual
+      tilt = 0
+      while tilt < 91:
+        print('fetching')
+        print(tilt)
+        data = requests.get(
+        f"https://developer.nrel.gov/api/pvwatts/v8.json",
+        params={
+          "api_key": f"{solar_api_key}",
+          "system_capacity": request.GET.get('system_capacity'),
+          "module_type": request.GET.get('module_type'),
+          "losses": request.GET.get('losses'),
+          "array_type": request.GET.get('array_type'),
+          "tilt": tilt,
+          "azimuth": request.GET.get('azimuth'),
+          "lat": request.GET.get('lat'),
+          "lon": request.GET.get('lon')
+        }).json()
+
+        if data['outputs']['ac_annual'] > new_ac_annual:
+          new_ac_annual = data['outputs']['ac_annual']
+          new_tilt = tilt
+        tilt = tilt + 1
+      print(new_ac_annual)  
+      return HttpResponse(json.dumps({'optimal_ac_annual': new_ac_annual, 'optimal_tilt': new_tilt}))
