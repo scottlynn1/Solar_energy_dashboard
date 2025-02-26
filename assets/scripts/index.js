@@ -4,7 +4,6 @@ const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 const form = document.getElementById('form');
 // buttons
-const save = document.getElementById('save');
 const deleteconfig = document.getElementById('deleteconfig');
 const retrieve = document.getElementById('retrieve');
 
@@ -42,7 +41,7 @@ function clearChart(chart) {
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  optimizeddata.querySelector('span').textContent = '';
+  optimizeddata.textContent = '';
   const formdata = new FormData(form);
   const params = new URLSearchParams({
     "system_capacity": formdata.get('system_capacity'),
@@ -75,14 +74,16 @@ form.addEventListener('submit', (e) => {
       { month: 'nov', kWh: returndata.dc_monthly[10] },
       { month: 'dec', kWh: returndata.dc_monthly[11] },
     ];
-    ac_annual.querySelector('span').textContent = '';
-    solrad_annual.querySelector('span').textContent = '';
-    ac_annual.querySelector('span').textContent = Math.round(returndata.ac_annual);
-    solrad_annual.querySelector('span').textContent = Math.round(returndata.solrad_annual);
+    ac_annual.textContent = '';
+    solrad_annual.textContent = '';
+    ac_annual.textContent = Math.round(returndata.ac_annual);
+    solrad_annual.textContent = Math.round(returndata.solrad_annual);
     clearChart(barchart);
     addData(barchart, solardata);
   });
 });
+
+const save = document.getElementById('save');
 
 save.addEventListener('click', (e) => {
   save.preventDefault;
@@ -116,9 +117,10 @@ save.addEventListener('click', (e) => {
   });
 })
 
+
 retrieve.addEventListener('submit', (e) => {
   e.preventDefault();
-  optimizeddata.querySelector('span').textContent = '';
+  optimizeddata.textContent = '';
   const system_name = document.getElementById('system_name');
   fetch(`retrieve?system_name=${system_name.value}`, {
     method: "GET",
@@ -144,10 +146,10 @@ retrieve.addEventListener('submit', (e) => {
     [...form.elements].forEach(element => {
       element.value = returndata.sysdata[element.id];
     })
-    ac_annual.querySelector('span').textContent = '';
-    solrad_annual.querySelector('span').textContent = '';
-    ac_annual.querySelector('span').textContent = Math.round(returndata.output.ac_annual);
-    solrad_annual.querySelector('span').textContent = Math.round(returndata.output.solrad_annual);
+    ac_annual.textContent = '';
+    solrad_annual.textContent = '';
+    ac_annual.textContent = Math.round(returndata.output.ac_annual);
+    solrad_annual.textContent = Math.round(returndata.output.solrad_annual);
     clearChart(barchart);
     addData(barchart, output);
   });
@@ -155,7 +157,7 @@ retrieve.addEventListener('submit', (e) => {
 
 deleteconfig.addEventListener('click', (e) => {
   e.preventDefault();
-  optimizeddata.querySelector('span').textContent = '';
+  optimizeddata.textContent = '';
   const system_name = document.getElementById('system_name');
   fetch(`retrieve?system_name=${system_name.value}`, {
     method: "DELETE",
@@ -173,9 +175,13 @@ deleteconfig.addEventListener('click', (e) => {
   });
 });
 
-const optimizeoutput = document.getElementById('optimizeoutput');
+
+
 const optimizeddata = document.getElementById('optimizeddata');
 const loadingsign = document.getElementById('loadingsign');
+
+const optimizeoutput = document.getElementById('optimizeoutput');
+
 optimizeoutput.addEventListener('click', (e) => {
   e.preventDefault();
   loadingsign.className = "loadingshow";
@@ -189,7 +195,7 @@ optimizeoutput.addEventListener('click', (e) => {
     "azimuth": formdata.get('azimuth'),
     "lat": formdata.get('lat'),
     "lon": formdata.get('lon'),
-    "ac_annual": ac_annual.querySelector('span').textContent,
+    "ac_annual": ac_annual.textContent,
   });
   fetch(`optimize?${params}`, {
     method: "GET",
@@ -200,6 +206,6 @@ optimizeoutput.addEventListener('click', (e) => {
   }).then(response => response.json()).then(returndata => {
     loadingsign.className = "loadinghide"
     console.log(returndata.optimal_ac_annual);
-    optimizeddata.querySelector('span').textContent = `${Math.round(returndata.optimal_ac_annual)} for ${returndata.optimal_tilt} degrees tilt`
+    optimizeddata.textContent = `${Math.round(returndata.optimal_ac_annual)} for ${returndata.optimal_tilt} degrees tilt`
   });
 });
