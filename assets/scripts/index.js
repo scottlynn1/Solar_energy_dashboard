@@ -1,21 +1,24 @@
 import Chart from 'chart.js/auto'
 
-const form = document.getElementById('form');
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-const barchart = new Chart(document.getElementById('acquisitions'), {
+const form = document.getElementById('form');
+// buttons
+const save = document.getElementById('save');
+const deleteconfig = document.getElementById('deleteconfig');
+const retrieve = document.getElementById('retrieve');
+
+const ac_annual = document.getElementById('ac_annual');
+const solrad_annual = document.getElementById('solrad_annual');
+
+// chart functions
+const barchart = new Chart(document.getElementById('barchart'), {
   type: "bar", 
   data: {labels: [], datasets: [{label: "DC Production by Month", data: []}]},
   options: {
     responsive: true,
     maintainAspectRatio: false,}
   });
-
-const save = document.getElementById('save');
-const deleteconfig = document.getElementById('deleteconfig');
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-const retrieve = document.getElementById('retrieve');
-const ac_annual = document.getElementById('ac_annual');
-const solrad_annual = document.getElementById('solrad_annual');
 
 function addData(chart, data) {
   data.forEach(row => {
@@ -35,6 +38,7 @@ function clearChart(chart) {
   }
 
 }
+// 
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -90,13 +94,14 @@ save.addEventListener('click', (e) => {
   data.forEach((key, value)=>{
     fulldata[value] = key;
   })
-  fetch('save', {
+  fetch('solarapi', {
     method: "POST",
     body: JSON.stringify(fulldata),
     mode: 'same-origin',
     headers: {
       'content-type': 'application/json',
       'X-CSRFtoken': csrftoken,
+      "X-Requested-With": "XMLHttpRequest",
     }
   }).then(response => response.json()).then(response => {
     if (response.response === "system name already exists") {
