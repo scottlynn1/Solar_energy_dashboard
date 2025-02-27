@@ -2,11 +2,18 @@ import Chart from 'chart.js/auto'
 
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
+// main form for solar system configuration data
 const form = document.getElementById('form');
+//
+
 const ac_annual = document.getElementById('ac_annual');
 const solrad_annual = document.getElementById('solrad_annual');
+const capacity_factor = document.getElementById('capacity_factor');
 
-// chart functions
+const optimizeddata = document.getElementById('optimizeddata');
+
+
+// chart functions and variables
 const barchart = new Chart(document.getElementById('barchart'), {
   type: "bar", 
   data: {labels: [], datasets: [{label: "DC Production by Month", data: []}]},
@@ -50,6 +57,16 @@ const chartoutput = [
 ];
 // 
 
+const displayAnnualData = function (annualdata) {
+  ac_annual.textContent = '';
+  solrad_annual.textContent = '';
+  optimizeddata.textContent = '';
+  capacity_factor.textContent = '';
+  ac_annual.textContent = Math.round(annualdata.ac_annual);
+  solrad_annual.textContent = Math.round(annualdata.solrad_annual);
+  capacity_factor.textContent = Math.round(annualdata.capacity_factor);
+};
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   const formdata = new FormData(form);
@@ -64,11 +81,7 @@ form.addEventListener('submit', (e) => {
     for (let i = 0; i < chartoutput.length; i++) {
       chartoutput[i].kWh = returndata.dc_monthly[i]
     }
-    ac_annual.textContent = '';
-    solrad_annual.textContent = '';
-    optimizeddata.textContent = '';
-    ac_annual.textContent = Math.round(returndata.ac_annual);
-    solrad_annual.textContent = Math.round(returndata.solrad_annual);
+    displayAnnualData(returndata);
     clearChart(barchart);
     addData(barchart, chartoutput);
   });
@@ -121,11 +134,7 @@ retrieve.addEventListener('submit', (e) => {
     [...form.elements].forEach(element => {
       element.value = returndata.sysdata[element.id];
     })
-    ac_annual.textContent = '';
-    solrad_annual.textContent = '';
-    optimizeddata.textContent = '';
-    ac_annual.textContent = Math.round(returndata.output.ac_annual);
-    solrad_annual.textContent = Math.round(returndata.output.solrad_annual);
+    displayAnnualData(returndata.output);
     clearChart(barchart);
     addData(barchart, chartoutput);
   });
@@ -158,7 +167,6 @@ deleteconfig.addEventListener('click', (e) => {
 
 
 
-const optimizeddata = document.getElementById('optimizeddata');
 const loadingsign = document.getElementById('loadingsign');
 
 const optimizeoutput = document.getElementById('optimizeoutput');
@@ -177,6 +185,7 @@ optimizeoutput.addEventListener('click', (e) => {
     }
   }).then(response => response.json()).then(returndata => {
     loadingsign.className = "loadinghide"
-    optimizeddata.textContent = `${Math.round(returndata.optimal_ac_annual)} for ${returndata.optimal_tilt} degrees tilt`
+    optimizeddata.textContent = '';
+    optimizeddata.textContent = `${Math.round(returndata.optimal_ac_annual)} for ${returndata.optimal_tilt} degrees tilt`;
   });
 });
