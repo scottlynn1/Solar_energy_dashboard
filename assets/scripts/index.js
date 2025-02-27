@@ -3,10 +3,6 @@ import Chart from 'chart.js/auto'
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 const form = document.getElementById('form');
-// buttons
-const deleteconfig = document.getElementById('deleteconfig');
-const retrieve = document.getElementById('retrieve');
-
 const ac_annual = document.getElementById('ac_annual');
 const solrad_annual = document.getElementById('solrad_annual');
 
@@ -91,6 +87,7 @@ save.addEventListener('click', (e) => {
   const client = prompt('name of client: ');
   const data = new FormData(form);
   data.append('system_name', client);
+  console.log(data);
   const fulldata = {};
   data.forEach((key, value)=>{
     fulldata[value] = key;
@@ -117,6 +114,7 @@ save.addEventListener('click', (e) => {
   });
 })
 
+const retrieve = document.getElementById('retrieve');
 
 retrieve.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -155,6 +153,9 @@ retrieve.addEventListener('submit', (e) => {
   });
 });
 
+
+const deleteconfig = document.getElementById('deleteconfig');
+
 deleteconfig.addEventListener('click', (e) => {
   e.preventDefault();
   optimizeddata.textContent = '';
@@ -186,18 +187,9 @@ optimizeoutput.addEventListener('click', (e) => {
   e.preventDefault();
   loadingsign.className = "loadingshow";
   const formdata = new FormData(form);
-  const params = new URLSearchParams({
-    "system_capacity": formdata.get('system_capacity'),
-    "module_type": formdata.get('module_type'),
-    "losses": formdata.get('losses'),
-    "array_type": formdata.get('array_type'),
-    "tilt": formdata.get('tilt'),
-    "azimuth": formdata.get('azimuth'),
-    "lat": formdata.get('lat'),
-    "lon": formdata.get('lon'),
-    "ac_annual": ac_annual.textContent,
-  });
-  fetch(`optimize?${params}`, {
+  formdata.append('ac_annual', ac_annual.textContent);
+  const params = new URLSearchParams(formdata);
+  fetch(`optimize?${[params]}`, {
     method: "GET",
     headers: {
       "accept": "application/json",
@@ -205,7 +197,6 @@ optimizeoutput.addEventListener('click', (e) => {
     }
   }).then(response => response.json()).then(returndata => {
     loadingsign.className = "loadinghide"
-    console.log(returndata.optimal_ac_annual);
     optimizeddata.textContent = `${Math.round(returndata.optimal_ac_annual)} for ${returndata.optimal_tilt} degrees tilt`
   });
 });

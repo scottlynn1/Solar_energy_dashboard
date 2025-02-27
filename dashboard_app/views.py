@@ -56,7 +56,6 @@ class solarapi(View):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     if is_ajax:
       data = json.loads(request.body)
-
       p = Sysdata(
         user = request.user.username,
         system_name = data['system_name'],
@@ -119,33 +118,23 @@ def retrieve(request):
 @login_required(login_url='/login')
 def optimize(request):
   is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-
   if is_ajax:
     if request.method == 'GET':
-      ac_annual = int(request.GET.get('ac_annual'))
-      print(ac_annual)
+      params = {}
+      for x in request.GET:
+        params[x] = request.GET[x]
+      ac_annual = int(params['ac_annual'])
       new_ac_annual = ac_annual
       tilt = 0
+      params.pop('ac_annual')
+      params["api_key"] = solar_api_key
       while tilt < 91:
-        print('fetching')
-        print(tilt)
-        data = requests.get(
+        params['tilt'] = tilt
+        outdata = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
-        params={
-          "api_key": f"{solar_api_key}",
-          "system_capacity": request.GET.get('system_capacity'),
-          "module_type": request.GET.get('module_type'),
-          "losses": request.GET.get('losses'),
-          "array_type": request.GET.get('array_type'),
-          "tilt": tilt,
-          "azimuth": request.GET.get('azimuth'),
-          "lat": request.GET.get('lat'),
-          "lon": request.GET.get('lon')
-        }).json()
-
-        if data['outputs']['ac_annual'] > new_ac_annual:
-          new_ac_annual = data['outputs']['ac_annual']
+        params=params).json()
+        if outdata['outputs']['ac_annual'] > new_ac_annual:
+          new_ac_annual = outdata['outputs']['ac_annual']
           new_tilt = tilt
         tilt = tilt + 1
-      print(new_ac_annual)  
       return HttpResponse(json.dumps({'optimal_ac_annual': new_ac_annual, 'optimal_tilt': new_tilt}))
