@@ -183,19 +183,31 @@ const optimizeoutput = document.getElementById('optimizeoutput');
 
 optimizeoutput.addEventListener('click', (e) => {
   e.preventDefault();
+
   loadingsign.className = "loadingshow";
   const formdata = new FormData(form);
   formdata.append('ac_annual', ac_annual.textContent);
   const params = new URLSearchParams(formdata);
+
   fetch(`optimize?${[params]}`, {
     method: "GET",
     headers: {
       "accept": "application/json",
       "X-Requested-With": "XMLHttpRequest",
     }
-  }).then(response => response.json()).then(returndata => {
+  }).then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      if (response.status === 404) throw new Error('404, not found');
+      if (response.status === 500) throw new Error('500, internal server error');
+    }
+  }).then(returndata => {
     loadingsign.className = "loadinghide"
     AnnualData.optimizeddata.textContent = '';
     AnnualData.optimizeddata.textContent = `${Math.round(returndata.optimal_ac_annual)} for ${returndata.optimal_tilt} degrees tilt`;
+  }).catch(error => {
+    loadingsign.className = 'loadinghide';
+    console.error('Fetch', error)
   });
 });
