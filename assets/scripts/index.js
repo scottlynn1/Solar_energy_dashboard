@@ -37,18 +37,8 @@ function clearChart(chart) {
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  optimizeddata.textContent = '';
   const formdata = new FormData(form);
-  const params = new URLSearchParams({
-    "system_capacity": formdata.get('system_capacity'),
-    "module_type": formdata.get('module_type'),
-    "losses": formdata.get('losses'),
-    "array_type": formdata.get('array_type'),
-    "tilt": formdata.get('tilt'),
-    "azimuth": formdata.get('azimuth'),
-    "lat": formdata.get('lat'),
-    "lon": formdata.get('lon')
-  });
+  const params = new URLSearchParams(formdata);
   fetch(`solarapi?${params}`, {
     method: "GET",
     headers: {
@@ -72,6 +62,7 @@ form.addEventListener('submit', (e) => {
     ];
     ac_annual.textContent = '';
     solrad_annual.textContent = '';
+    optimizeddata.textContent = '';
     ac_annual.textContent = Math.round(returndata.ac_annual);
     solrad_annual.textContent = Math.round(returndata.solrad_annual);
     clearChart(barchart);
@@ -80,24 +71,18 @@ form.addEventListener('submit', (e) => {
 });
 
 const save = document.getElementById('save');
+const list = document.getElementById('system_name');
 
 save.addEventListener('click', (e) => {
   save.preventDefault;
-  const list = document.getElementById('system_name');
   const client = prompt('name of client: ');
   const data = new FormData(form);
   data.append('system_name', client);
-  console.log(data);
-  const fulldata = {};
-  data.forEach((key, value)=>{
-    fulldata[value] = key;
-  })
   fetch('solarapi', {
     method: "POST",
-    body: JSON.stringify(fulldata),
+    body: data,
     mode: 'same-origin',
     headers: {
-      'content-type': 'application/json',
       'X-CSRFtoken': csrftoken,
       "X-Requested-With": "XMLHttpRequest",
     }
@@ -118,7 +103,6 @@ const retrieve = document.getElementById('retrieve');
 
 retrieve.addEventListener('submit', (e) => {
   e.preventDefault();
-  optimizeddata.textContent = '';
   const system_name = document.getElementById('system_name');
   fetch(`retrieve?system_name=${system_name.value}`, {
     method: "GET",
@@ -146,6 +130,7 @@ retrieve.addEventListener('submit', (e) => {
     })
     ac_annual.textContent = '';
     solrad_annual.textContent = '';
+    optimizeddata.textContent = '';
     ac_annual.textContent = Math.round(returndata.output.ac_annual);
     solrad_annual.textContent = Math.round(returndata.output.solrad_annual);
     clearChart(barchart);
@@ -158,6 +143,8 @@ const deleteconfig = document.getElementById('deleteconfig');
 
 deleteconfig.addEventListener('click', (e) => {
   e.preventDefault();
+  optimizeddata.textContent = '';
+  solrad_annual.textContent = '';
   optimizeddata.textContent = '';
   const system_name = document.getElementById('system_name');
   fetch(`retrieve?system_name=${system_name.value}`, {

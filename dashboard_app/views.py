@@ -52,10 +52,11 @@ class solarapi(View):
       return HttpResponse(json.dumps(info), content_type="application/json")
     else:
       print('Invalid request')
+
   def post(self, request):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     if is_ajax:
-      data = json.loads(request.body)
+      data = request.POST
       p = Sysdata(
         user = request.user.username,
         system_name = data['system_name'],
