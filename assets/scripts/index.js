@@ -7,9 +7,11 @@ const form = document.getElementById('form');
 //
 
 // chart functions and variables
+Chart.defaults.color = '#000';
+
 const barchart = new Chart(document.getElementById('barchart'), {
   type: "bar", 
-  data: {labels: [], datasets: [{label: "DC Production by Month", data: []}]},
+  data: {labels: [], datasets: [{label: "DC Production by Month in kWh", data: [], borderColor: '#7C372A', backgroundColor: '#9E4434' }]},
   options: {
     responsive: true,
     maintainAspectRatio: false,}

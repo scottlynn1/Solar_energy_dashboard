@@ -1,5 +1,12 @@
 body {
-  background-color: rgb(189, 88, 70);
+  padding: 1rem;
+  background-color: rgb(172, 75, 58);
+}
+
+.form {
+  padding: 1rem;
+  background-color: rgb(158, 68, 52);
+  max-width: 1241px;
 }
 
 /* container for main form */
@@ -28,9 +35,8 @@ body {
   justify-content: start;
 }
 
-
-
 .barchart {
+  background-color: rgb(189, 88, 70);
   width: 100%;
   max-width: 1000px;
   min-width: 300px;
@@ -42,6 +48,8 @@ body {
 .annual_cont {
   display: flex;
   flex-direction: column;
+  background-color: rgb(158, 68, 52);
+  padding: 1rem;
 }
 
 .annual_cont div {
@@ -53,8 +61,8 @@ body {
 .loadingshow {
   width: 2rem;
   height: 2rem;
-  border: 5px solid #f3f3f3;
-  border-top: 6px solid #925ac7;
+  border: 5px solid #f0acac;
+  border-top: 6px solid #c78b5a;
   border-radius: 50%;
   margin: auto;
   animation: spin 1s infinite linear;
