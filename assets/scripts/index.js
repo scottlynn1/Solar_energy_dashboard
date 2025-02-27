@@ -33,6 +33,21 @@ function clearChart(chart) {
   }
 
 }
+
+const chartoutput = [
+  { month: 'jan', kWh: ''},
+  { month: 'feb', kWh: ''},
+  { month: 'mar', kWh: ''},
+  { month: 'apr', kWh: ''},
+  { month: 'may', kWh: ''},
+  { month: 'jun', kWh: ''},
+  { month: 'jul', kWh: ''},
+  { month: 'aug', kWh: ''},
+  { month: 'sep', kWh: ''},
+  { month: 'oct', kWh: ''},
+  { month: 'nov', kWh: ''},
+  { month: 'dec', kWh: ''},
+];
 // 
 
 form.addEventListener('submit', (e) => {
@@ -46,27 +61,16 @@ form.addEventListener('submit', (e) => {
       "X-Requested-With": "XMLHttpRequest",
     }
   }).then(response => response.json()).then(returndata => {
-    const solardata = [
-      { month: 'jan', kWh: returndata.dc_monthly[0] },
-      { month: 'feb', kWh: returndata.dc_monthly[1] },
-      { month: 'mar', kWh: returndata.dc_monthly[2] },
-      { month: 'apr', kWh: returndata.dc_monthly[3] },
-      { month: 'may', kWh: returndata.dc_monthly[4] },
-      { month: 'jun', kWh: returndata.dc_monthly[5] },
-      { month: 'jul', kWh: returndata.dc_monthly[6] },
-      { month: 'aug', kWh: returndata.dc_monthly[7] },
-      { month: 'sep', kWh: returndata.dc_monthly[8] },
-      { month: 'oct', kWh: returndata.dc_monthly[9] },
-      { month: 'nov', kWh: returndata.dc_monthly[10] },
-      { month: 'dec', kWh: returndata.dc_monthly[11] },
-    ];
+    for (let i = 0; i < chartoutput.length; i++) {
+      chartoutput[i].kWh = returndata.dc_monthly[i]
+    }
     ac_annual.textContent = '';
     solrad_annual.textContent = '';
     optimizeddata.textContent = '';
     ac_annual.textContent = Math.round(returndata.ac_annual);
     solrad_annual.textContent = Math.round(returndata.solrad_annual);
     clearChart(barchart);
-    addData(barchart, solardata);
+    addData(barchart, chartoutput);
   });
 });
 
@@ -111,20 +115,9 @@ retrieve.addEventListener('submit', (e) => {
       "X-Requested-With": "XMLHttpRequest",
     }
   }).then(response => response.json()).then(returndata => {
-    const output = [
-      { month: 'jan', kWh: returndata.output.dc_monthly[0] },
-      { month: 'feb', kWh: returndata.output.dc_monthly[1] },
-      { month: 'mar', kWh: returndata.output.dc_monthly[2] },
-      { month: 'apr', kWh: returndata.output.dc_monthly[3] },
-      { month: 'may', kWh: returndata.output.dc_monthly[4] },
-      { month: 'jun', kWh: returndata.output.dc_monthly[5] },
-      { month: 'jul', kWh: returndata.output.dc_monthly[6] },
-      { month: 'aug', kWh: returndata.output.dc_monthly[7] },
-      { month: 'sep', kWh: returndata.output.dc_monthly[8] },
-      { month: 'oct', kWh: returndata.output.dc_monthly[9] },
-      { month: 'nov', kWh: returndata.output.dc_monthly[10] },
-      { month: 'dec', kWh: returndata.output.dc_monthly[11] },
-    ];
+    for (let i = 0; i < chartoutput.length; i++) {
+      chartoutput[i].kWh = returndata.output.dc_monthly[i]
+    }
     [...form.elements].forEach(element => {
       element.value = returndata.sysdata[element.id];
     })
@@ -134,7 +127,7 @@ retrieve.addEventListener('submit', (e) => {
     ac_annual.textContent = Math.round(returndata.output.ac_annual);
     solrad_annual.textContent = Math.round(returndata.output.solrad_annual);
     clearChart(barchart);
-    addData(barchart, output);
+    addData(barchart, chartoutput);
   });
 });
 
@@ -143,9 +136,9 @@ const deleteconfig = document.getElementById('deleteconfig');
 
 deleteconfig.addEventListener('click', (e) => {
   e.preventDefault();
+  ac_annual.textContent = '';
   optimizeddata.textContent = '';
   solrad_annual.textContent = '';
-  optimizeddata.textContent = '';
   const system_name = document.getElementById('system_name');
   fetch(`retrieve?system_name=${system_name.value}`, {
     method: "DELETE",
