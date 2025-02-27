@@ -6,13 +6,6 @@ const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 const form = document.getElementById('form');
 //
 
-const ac_annual = document.getElementById('ac_annual');
-const solrad_annual = document.getElementById('solrad_annual');
-const capacity_factor = document.getElementById('capacity_factor');
-
-const optimizeddata = document.getElementById('optimizeddata');
-
-
 // chart functions and variables
 const barchart = new Chart(document.getElementById('barchart'), {
   type: "bar", 
