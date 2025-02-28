@@ -35,15 +35,9 @@ class solarapi(View):
       outputdata = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
         params=params).json()['outputs']
-      returndata = {
-        'poa_monthly': outputdata['poa_monthly'],
-        'dc_monthly': outputdata['dc_monthly'],
-        'ac_monthly': outputdata['ac_monthly'],
-        'solrad_monthly': outputdata['solrad_monthly'],
-        'solrad_annual': outputdata['solrad_annual'],
-        'ac_annual': outputdata['ac_annual'],
-        'capacity_factor': outputdata['capacity_factor']
-      }
+      returndata = {}
+      for key in outputdata:
+        returndata[key] = outputdata[key]
       return HttpResponse(json.dumps(returndata), content_type="application/json")
     else:
       print('Invalid request')
@@ -94,15 +88,9 @@ def retrieve(request):
       outputdata = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
         params=params).json()['outputs']
-      returndata = {
-        'poa_monthly': outputdata['poa_monthly'],
-        'dc_monthly': outputdata['dc_monthly'],
-        'ac_monthly': outputdata['ac_monthly'],
-        'solrad_monthly': outputdata['solrad_monthly'],
-        'solrad_annual': outputdata['solrad_annual'],
-        'ac_annual': outputdata['ac_annual'],
-        'capacity_factor': outputdata['capacity_factor']
-      }
+      returndata = {}
+      for key in outputdata:
+        returndata[key] = outputdata[key]
       combinedreturndata = {'output': returndata, 'sysdata': systemdata}
       return HttpResponse(json.dumps(combinedreturndata), content_type="application/json")
     elif request.method == "DELETE":
