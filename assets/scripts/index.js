@@ -201,6 +201,7 @@ optimizeoutput.addEventListener('click', (e) => {
     } else {
       if (response.status === 404) throw new Error('404, not found');
       if (response.status === 500) throw new Error('500, internal server error');
+      throw new Error(response.status);
     }
   }).then(returndata => {
     loadingsign.className = "loadinghide"

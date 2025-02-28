@@ -28,28 +28,23 @@ class solarapi(View):
   def get(self, request):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     if is_ajax:
-      data = requests.get(
+      params = {}
+      for key in request.GET:
+        params[key] = request.GET[key]
+      params["api_key"] = solar_api_key
+      outputdata = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
-        params={
-          "api_key": f"{solar_api_key}",
-          "system_capacity": request.GET.get('system_capacity'),
-          "module_type": request.GET.get('module_type'),
-          "losses": request.GET.get('losses'),
-          "array_type": request.GET.get('array_type'),
-          "tilt": request.GET.get('tilt'),
-          "azimuth": request.GET.get('azimuth'),
-          "lat": request.GET.get('lat'),
-          "lon": request.GET.get('lon')
-      }).json()
-      poa_monthly = data['outputs']['poa_monthly']
-      dc_monthly = data['outputs']['dc_monthly']
-      ac_monthly = data['outputs']['ac_monthly']
-      solrad_monthly = data['outputs']['solrad_monthly']
-      solrad_annual = data['outputs']['solrad_annual']
-      ac_annual = data['outputs']['ac_annual']
-      capacity_factor = data['outputs']['capacity_factor']
-      info = {'poa_monthly': poa_monthly, 'dc_monthly': dc_monthly, 'ac_monthly': ac_monthly, 'solrad_monthly': solrad_monthly, 'solrad_annual': solrad_annual, 'ac_annual': ac_annual, 'capacity_factor': capacity_factor}
-      return HttpResponse(json.dumps(info), content_type="application/json")
+        params=params).json()['outputs']
+      returndata = {
+        'poa_monthly': outputdata['poa_monthly'],
+        'dc_monthly': outputdata['dc_monthly'],
+        'ac_monthly': outputdata['ac_monthly'],
+        'solrad_monthly': outputdata['solrad_monthly'],
+        'solrad_annual': outputdata['solrad_annual'],
+        'ac_annual': outputdata['ac_annual'],
+        'capacity_factor': outputdata['capacity_factor']
+      }
+      return HttpResponse(json.dumps(returndata), content_type="application/json")
     else:
       print('Invalid request')
 
@@ -84,29 +79,32 @@ def retrieve(request):
   if is_ajax:
     if request.method == 'GET':
       system = Sysdata.objects.get(system_name=request.GET.get('system_name'), user=request.user.username)
-      data = requests.get(
+      systemdata = {
+        'api_key': solar_api_key,
+        'system_capacity': system.system_capacity, 
+        'module_type': system.module_type, 
+        'losses': system.losses, 
+        'array_type': system.array_type, 
+        'tilt': system.tilt, 
+        'azimuth': system.azimuth, 
+        'lat': system.lat, 
+        'lon': system.lon
+      }
+      params = dict(systemdata, api_key=f'{solar_api_key}')
+      outputdata = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
-        params={
-          "api_key": f"{solar_api_key}",
-          "system_capacity": system.system_capacity,
-          "module_type": system.module_type,
-          "losses": system.losses,
-          "array_type": system.array_type,
-          "tilt": system.tilt,
-          "azimuth": system.azimuth,
-          "lat": system.lat,
-          "lon": system.lon
-        }).json()
-      poa_monthly = data['outputs']['poa_monthly']
-      dc_monthly = data['outputs']['dc_monthly']
-      ac_monthly = data['outputs']['ac_monthly']
-      solrad_monthly = data['outputs']['solrad_monthly']
-      solrad_annual = data['outputs']['solrad_annual']
-      ac_annual = data['outputs']['ac_annual']
-      capacity_factor = data['outputs']['capacity_factor']
-      info = {'output': {'poa_monthly': poa_monthly, 'dc_monthly': dc_monthly, 'ac_monthly': ac_monthly, 'solrad_monthly': solrad_monthly, 'solrad_annual': solrad_annual, 'ac_annual': ac_annual, 'capacity_factor': capacity_factor},
-              'sysdata': {'system_capacity': system.system_capacity, 'module_type': system.module_type, 'losses': system.losses, 'array_type': system.array_type, 'tilt': system.tilt, 'azimuth': system.azimuth, 'lat': system.lat, 'lon': system.lon}}
-      return HttpResponse(json.dumps(info), content_type="application/json")
+        params=params).json()['outputs']
+      returndata = {
+        'poa_monthly': outputdata['poa_monthly'],
+        'dc_monthly': outputdata['dc_monthly'],
+        'ac_monthly': outputdata['ac_monthly'],
+        'solrad_monthly': outputdata['solrad_monthly'],
+        'solrad_annual': outputdata['solrad_annual'],
+        'ac_annual': outputdata['ac_annual'],
+        'capacity_factor': outputdata['capacity_factor']
+      }
+      combinedreturndata = {'output': returndata, 'sysdata': systemdata}
+      return HttpResponse(json.dumps(combinedreturndata), content_type="application/json")
     elif request.method == "DELETE":
       system_name = request.GET.get('system_name')
       Sysdata.objects.get(system_name=system_name, user=request.user.username).delete()
@@ -122,8 +120,8 @@ def optimize(request):
   if is_ajax:
     if request.method == 'GET':
       params = {}
-      for x in request.GET:
-        params[x] = request.GET[x]
+      for key in request.GET:
+        params[key] = request.GET[key]
       ac_annual = int(params['ac_annual'])
       new_ac_annual = ac_annual
       tilt = 0
@@ -131,11 +129,11 @@ def optimize(request):
       params["api_key"] = solar_api_key
       while tilt < 91:
         params['tilt'] = tilt
-        outdata = requests.get(
+        outputdata = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
         params=params).json()
-        if outdata['outputs']['ac_annual'] > new_ac_annual:
-          new_ac_annual = outdata['outputs']['ac_annual']
+        if outputdata['outputs']['ac_annual'] > new_ac_annual:
+          new_ac_annual = outputdata['outputs']['ac_annual']
           new_tilt = tilt
         tilt = tilt + 1
       return HttpResponse(json.dumps({'optimal_ac_annual': new_ac_annual, 'optimal_tilt': new_tilt}))
