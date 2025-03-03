@@ -1,5 +1,5 @@
 import Chart from 'chart.js/auto'
-
+import '../styles/style.css'
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 // main form for solar system configuration data
