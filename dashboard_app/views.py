@@ -124,11 +124,9 @@ async def optimize(request):
           outputdatapending = await client.get(
           f"https://developer.nrel.gov/api/pvwatts/v8.json",
           params=params)
+          print(outputdatapending.headers['X-Ratelimit-Remaining'])
           outputdata = outputdatapending.json()
           ac_list[tilt] = outputdata['outputs']['ac_annual']
-          # if outputdata['outputs']['ac_annual'] > new_ac_annual:
-          #   new_ac_annual = outputdata['outputs']['ac_annual']
-          #   new_tilt = tilt
           tilt = tilt + 1
         res = max(ac_list, key=ac_list.get)
         return HttpResponse(json.dumps({'optimal_ac_annual': ac_list[res], 'optimal_tilt': res}))
