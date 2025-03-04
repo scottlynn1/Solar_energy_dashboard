@@ -88,7 +88,6 @@ def retrieve(request):
       resp = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
         params=params)
-      print(resp.headers)
       outputdata = resp.json()['outputs']
       returndata = {}
       for key in outputdata:

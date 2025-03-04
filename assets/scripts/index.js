@@ -13,16 +13,31 @@ Chart.defaults.color = '#000';
 
 const barchart = new Chart(document.getElementById('barchart'), {
   type: "bar", 
-  data: {labels: [], datasets: [{label: "DC Production by Month in kWh", data: [], borderColor: '#7C372A', backgroundColor: '#9E4434' }]},
+  data: {
+    labels: [], 
+    datasets: [{
+      label: "DC Production by Month in kWh", 
+      data: [],
+      borderColor: '#7C372A', 
+      backgroundColor: '#992417',
+    }, {
+      label: "AC Production by Month in kWh",
+      data: [],
+      borderColor: '#7C372A',
+      backgroundColor: '#94401c',
+    }
+  ]},
   options: {
     responsive: true,
-    maintainAspectRatio: false,}
+    maintainAspectRatio: false,
+  }
   });
 
 function addData(chart, data) {
   data.forEach(row => {
     chart.data.labels.push(row.month);
-    chart.data.datasets[0].data.push(row.kWh);
+    chart.data.datasets[0].data.push(row.kWh[0]);
+    chart.data.datasets[1].data.push(row.kWh[1]);
   });
   chart.update();
 }
@@ -31,6 +46,7 @@ function clearChart(chart) {
   if (chart.data.labels.length !==0) {
     chart.data.labels.length = 0;
     chart.data.datasets[0].data.length = 0;
+    chart.data.datasets[1].data.length = 0;
     chart.update();
   } else {
     console.log('no data to clear');
@@ -39,18 +55,18 @@ function clearChart(chart) {
 }
 
 const chartoutput = [
-  { month: 'jan', kWh: ''},
-  { month: 'feb', kWh: ''},
-  { month: 'mar', kWh: ''},
-  { month: 'apr', kWh: ''},
-  { month: 'may', kWh: ''},
-  { month: 'jun', kWh: ''},
-  { month: 'jul', kWh: ''},
-  { month: 'aug', kWh: ''},
-  { month: 'sep', kWh: ''},
-  { month: 'oct', kWh: ''},
-  { month: 'nov', kWh: ''},
-  { month: 'dec', kWh: ''},
+  { month: 'jan', kWh: []},
+  { month: 'feb', kWh: []},
+  { month: 'mar', kWh: []},
+  { month: 'apr', kWh: []},
+  { month: 'may', kWh: []},
+  { month: 'jun', kWh: []},
+  { month: 'jul', kWh: []},
+  { month: 'aug', kWh: []},
+  { month: 'sep', kWh: []},
+  { month: 'oct', kWh: []},
+  { month: 'nov', kWh: []},
+  { month: 'dec', kWh: []},
 ];
 // 
 
@@ -80,6 +96,7 @@ const AnnualData = (function () {
   return {ac_annual, solrad_annual, capacity_factor, optimizeddata, displayData, clearData}
 })();
 
+//
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   const formdata = new FormData(form);
@@ -92,17 +109,19 @@ form.addEventListener('submit', (e) => {
     }
   }).then(response => response.json()).then(returndata => {
     for (let i = 0; i < chartoutput.length; i++) {
-      chartoutput[i].kWh = returndata.dc_monthly[i]
+      chartoutput[i].kWh[0] = returndata.dc_monthly[i]
+      chartoutput[i].kWh[1] = returndata.ac_monthly[i]
     }
     AnnualData.displayData(returndata);
     clearChart(barchart);
     addData(barchart, chartoutput);
   });
 });
+//
 
 const save = document.getElementById('save');
 const list = document.getElementById('system_name');
-
+//
 save.addEventListener('click', (e) => {
   save.preventDefault;
   const client = prompt('name of client: ');
@@ -128,9 +147,10 @@ save.addEventListener('click', (e) => {
     }
   });
 })
+//
 
 const retrieve = document.getElementById('retrieve');
-
+//
 retrieve.addEventListener('submit', (e) => {
   e.preventDefault();
   const system_name = document.getElementById('system_name');
@@ -142,7 +162,8 @@ retrieve.addEventListener('submit', (e) => {
     }
   }).then(response => response.json()).then(returndata => {
     for (let i = 0; i < chartoutput.length; i++) {
-      chartoutput[i].kWh = returndata.output.dc_monthly[i]
+      chartoutput[i].kWh[0] = returndata.output.dc_monthly[i];
+      chartoutput[i].kWh[1] = returndata.output.ac_monthly[i];
     }
     [...form.elements].forEach(element => {
       element.value = returndata.sysdata[element.id];
@@ -152,10 +173,10 @@ retrieve.addEventListener('submit', (e) => {
     addData(barchart, chartoutput);
   });
 });
-
+//
 
 const deleteconfig = document.getElementById('deleteconfig');
-
+//
 deleteconfig.addEventListener('click', (e) => {
   e.preventDefault();
   AnnualData.clearData();
@@ -176,21 +197,17 @@ deleteconfig.addEventListener('click', (e) => {
     form.reset();
   });
 });
-
-
+//
 
 const loadingsign = document.getElementById('loadingsign');
-
 const optimizeoutput = document.getElementById('optimizeoutput');
-
+//
 optimizeoutput.addEventListener('click', (e) => {
   e.preventDefault();
-
   loadingsign.className = "loadingshow";
   const formdata = new FormData(form);
   formdata.append('ac_annual', ac_annual.textContent);
   const params = new URLSearchParams(formdata);
-
   fetch(`optimize?${[params]}`, {
     method: "GET",
     headers: {
@@ -214,5 +231,5 @@ optimizeoutput.addEventListener('click', (e) => {
     console.error('Fetch', error)
   });
 });
-
+//
 };
