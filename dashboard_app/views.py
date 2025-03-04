@@ -9,6 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
 from django.views import View
 from django.utils.decorators import method_decorator
+import asyncio
+import httpx
+
 solar_api_key = os.environ.get('solar_api_key')
 # Create your views here.
 
@@ -103,7 +106,7 @@ def retrieve(request):
 
 
 @login_required(login_url='/login')
-def optimize(request):
+async def optimize(request):
   is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
   if is_ajax:
     if request.method == 'GET':
@@ -111,17 +114,21 @@ def optimize(request):
       for key in request.GET:
         params[key] = request.GET[key]
       ac_annual = int(params['ac_annual'])
-      new_ac_annual = ac_annual
+      ac_list = {}
       tilt = 0
       params.pop('ac_annual')
       params["api_key"] = solar_api_key
-      while tilt < 91:
-        params['tilt'] = tilt
-        outputdata = requests.get(
-        f"https://developer.nrel.gov/api/pvwatts/v8.json",
-        params=params).json()
-        if outputdata['outputs']['ac_annual'] > new_ac_annual:
-          new_ac_annual = outputdata['outputs']['ac_annual']
-          new_tilt = tilt
-        tilt = tilt + 1
-      return HttpResponse(json.dumps({'optimal_ac_annual': new_ac_annual, 'optimal_tilt': new_tilt}))
+      async with httpx.AsyncClient() as client:
+        while tilt < 91:
+          params['tilt'] = tilt
+          outputdatapending = await client.get(
+          f"https://developer.nrel.gov/api/pvwatts/v8.json",
+          params=params)
+          outputdata = outputdatapending.json()
+          ac_list[tilt] = outputdata['outputs']['ac_annual']
+          # if outputdata['outputs']['ac_annual'] > new_ac_annual:
+          #   new_ac_annual = outputdata['outputs']['ac_annual']
+          #   new_tilt = tilt
+          tilt = tilt + 1
+        res = max(ac_list, key=ac_list.get)
+        return HttpResponse(json.dumps({'optimal_ac_annual': ac_list[res], 'optimal_tilt': res}))
