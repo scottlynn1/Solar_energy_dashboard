@@ -1,4 +1,6 @@
 import Chart from 'chart.js/auto'
+import '../styles/style.css'
+window.onload = function() {
 
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
@@ -212,3 +214,5 @@ optimizeoutput.addEventListener('click', (e) => {
     console.error('Fetch', error)
   });
 });
+
+};

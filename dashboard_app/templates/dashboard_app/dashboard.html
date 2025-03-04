@@ -8,12 +8,12 @@
     <div class="main_cont">
       <div class="sub_cont">
         <div>
-          <label for="system_capacity">system capacity: </label>
-          <input type="number" min="0" max="500000" id="system_capacity" name="system_capacity">
+          <label class="text-rose-200" for="system_capacity">system capacity: </label>
+          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="500000" id="system_capacity" name="system_capacity">
         </div>
         <div>
-          <label for="module_type">module type: </label>
-          <select name="module_type" id="module_type">
+          <label class="text-rose-200" for="module_type">module type: </label>
+          <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="module_type" id="module_type">
             <option value="0">Standard</option>
             <option value="1">Premium</option>
             <option value="2">Thin Film</option>
@@ -22,12 +22,12 @@
       </div>
       <div class="sub_cont">
         <div>
-          <label for="losses">losses: </label>
-          <input type="number" min="-5" max='95' id="losses" name="losses">
+          <label class="text-rose-200" for="losses">losses: </label>
+          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-5" max='95' id="losses" name="losses">
         </div>
         <div>
-          <label for="array_type">array type: </label>
-          <select name="array_type" id="array_type">
+          <label class="text-rose-200" for="array_type">array type: </label>
+          <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="array_type" id="array_type">
             <option value="0">Fixed - Open Rack</option>
             <option value="1">Fixed - Roof Mounted</option>
             <option value="2">1-Axis</option>
@@ -38,27 +38,27 @@
       </div>
       <div class="sub_cont">
         <div>
-          <label for="tilt">Tilt: </label>
-          <input type="number" min="0" max="90" id="tilt" name="tilt">
+          <label class="text-rose-200" for="tilt">Tilt: </label>
+          <input class='border p-2 w-full bg-red-300 rounded-s-sx' class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="90" id="tilt" name="tilt">
         </div>
         <div>
-          <label for="azimuth">Azimuth: </label>
-          <input type="number" min="0" max="359" id="azimuth" name="azimuth">
+          <label class="text-rose-200" for="azimuth">Azimuth: </label>
+          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="359" id="azimuth" name="azimuth">
         </div>
       </div>
       <div class="sub_cont">
         <div>
-          <label for="lat">Latitude: </label>
-          <input type="number" min="-90" max="90" id="lat" name="lat">
+          <label class="text-rose-200" for="lat">Latitude: </label>
+          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-90" max="90" id="lat" name="lat">
         </div>
         <div>
-          <label for="lon">Longitude:</label>
-          <input type="number" min="-180" max="180" id="lon" name="lon">
+          <label class="text-rose-200" for="lon">Longitude:</label>
+          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-180" max="180" id="lon" name="lon">
         </div>
       </div>
     </div>
-    <button type="submit">Submit</button>
-    <button type="button" id="save">Save</button>
+    <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Submit</button>
+    <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="save">Save</button>
   </form>
 </div>
 <div class="data_cont">
@@ -67,16 +67,16 @@
   </div>
   <div class="annual_cont">
     <div>
-      <p>Annual AC production: <span id="ac_annual"></span> </p>
+      <p class="text-rose-200">Annual AC production:</p><div class="text-rose-400 font-bold" id="ac_annual"></div>
     </div>
     <div>
-      <p>Annual Solar Radiation: <span id="solrad_annual"></span></p>
+      <p class="text-rose-200">Annual Solar Radiation:</p> <div class="text-rose-400 font-bold" id="solrad_annual"></div>
     </div>
     <div>
-      <p>Capacity Factor: <span id="capacity_factor"></span></p>
+      <p class="text-rose-200">Capacity Factor:</p><div class="text-rose-400 font-bold" id="capacity_factor"></div>
     </div>
     <div>
-      <p>Optimized Tilt and Annual AC ouput: <span id="optimizeddata"></span><div id="loadingsign" class="loadinghide"></div></p>
+      <p class="text-rose-200">Optimized Tilt and Annual AC ouput:</p><div class="text-rose-400 font-bold" id="optimizeddata"></div><div id="loadingsign" class="loadinghide"></div>
     </div>
   </div>
 </div>
@@ -84,7 +84,7 @@
 <div>
   <form id="retrieve">
     <label for="system_name">System: </label>
-    <select name="system_name" id="system_name">
+    <select class='border p-2 bg-red-300 rounded-s-sx' name="system_name" id="system_name">
       <option value="">Choose a System</option>
     {% for system in systemlist %}
       <option value='{{ system }}'>{{ system }}</option>
@@ -92,9 +92,9 @@
       <div>No Systems Saved</div>
     {% endfor %}
     </select>
-    <button type="submit">Retrieve</button>
-    <button type="button" id="deleteconfig">Delete</button>
-    <button type="button" id="optimizeoutput">Optimize</button>
+    <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Retrieve</button>
+    <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="deleteconfig">Delete</button>
+    <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="optimizeoutput">Optimize</button>
   </form>
 </div>
 <a href="{% url 'users:logout' %}">Log Out</a>

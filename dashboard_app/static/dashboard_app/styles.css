@@ -3,6 +3,10 @@ body {
   background-color: rgb(172, 75, 58);
 }
 
+/* button {
+  background-color: rgb(145, 7, 7);
+} */
+
 .form {
   padding: 1rem;
   background-color: rgb(158, 68, 52);
@@ -50,6 +54,7 @@ body {
   flex-direction: column;
   background-color: rgb(158, 68, 52);
   padding: 1rem;
+  max-width: 241px;
 }
 
 .annual_cont div {
