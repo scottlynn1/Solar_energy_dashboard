@@ -85,9 +85,11 @@ def retrieve(request):
         'lon': system.lon
       }
       params = dict(systemdata, api_key=f'{solar_api_key}')
-      outputdata = requests.get(
+      resp = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
-        params=params).json()['outputs']
+        params=params)
+      print(resp.headers)
+      outputdata = resp.json()['outputs']
       returndata = {}
       for key in outputdata:
         returndata[key] = outputdata[key]
@@ -117,9 +119,11 @@ def optimize(request):
       params["api_key"] = solar_api_key
       while tilt < 91:
         params['tilt'] = tilt
-        outputdata = requests.get(
+        resp = requests.get(
         f"https://developer.nrel.gov/api/pvwatts/v8.json",
-        params=params).json()
+        params=params)
+        print(resp.headers['X-Ratelimit-Remaining'])
+        outputdata = resp.json()
         if outputdata['outputs']['ac_annual'] > new_ac_annual:
           new_ac_annual = outputdata['outputs']['ac_annual']
           new_tilt = tilt
