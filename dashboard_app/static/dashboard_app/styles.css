@@ -3,41 +3,12 @@ body {
   background-color: rgb(172, 75, 58);
 }
 
-/* button {
-  background-color: rgb(145, 7, 7);
-} */
-
 .form {
   padding: 1rem;
   background-color: rgb(158, 68, 52);
   max-width: 1241px;
 }
 
-/* container for main form */
-.main_cont {
-  display: flex;
-  flex-direction: row;
-  max-width: 1000px;
-}
-
-.sub_cont {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-}
-
-.sub_cont div {
-  text-align: center;
-}
-/*  */
-
-/* container for chart and annual data */
-.data_cont {
-  display: flex;
-  align-items: stretch;
-  justify-content: start;
-}
 
 .barchart {
   background-color: rgb(189, 88, 70);
@@ -49,18 +20,14 @@ body {
   aspect-ratio: 16 / 9;
 }
 
+
 .annual_cont {
-  display: flex;
-  flex-direction: column;
   background-color: rgb(158, 68, 52);
   padding: 1rem;
   max-width: 241px;
 }
 
-.annual_cont div {
-  flex: 1;
-  text-align: center;
-}
+
 /*  */
 
 .loadingshow {

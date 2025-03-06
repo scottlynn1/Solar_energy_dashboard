@@ -3,15 +3,15 @@
 {% block body %}
 {% csrf_token %}
 <p>Hello, {{user}}!</p>
-<div class="form">
+<div class="flex flex-col">
   <form id="form">
-    <div class="main_cont">
-      <div class="sub_cont">
-        <div>
+    <div class="flex form">
+      <div class="flex flex-col align-center">
+        <div class="text-center">
           <label class="text-rose-200" for="system_capacity">system capacity: </label>
           <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="500000" id="system_capacity" name="system_capacity">
         </div>
-        <div>
+        <div class="text-center">
           <label class="text-rose-200" for="module_type">module type: </label>
           <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="module_type" id="module_type">
             <option value="0">Standard</option>
@@ -20,12 +20,12 @@
           </select>
         </div>
       </div>
-      <div class="sub_cont">
-        <div>
+      <div class="flex flex-col align-center">
+        <div class="text-center">
           <label class="text-rose-200" for="losses">losses: </label>
           <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-5" max='95' id="losses" name="losses">
         </div>
-        <div>
+        <div class="text-center">
           <label class="text-rose-200" for="array_type">array type: </label>
           <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="array_type" id="array_type">
             <option value="0">Fixed - Open Rack</option>
@@ -36,22 +36,22 @@
           </select>
         </div>
       </div>
-      <div class="sub_cont">
-        <div>
+      <div class="flex flex-col align-center">
+        <div class="text-center">
           <label class="text-rose-200" for="tilt">Tilt: </label>
           <input class='border p-2 w-full bg-red-300 rounded-s-sx' class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="90" id="tilt" name="tilt">
         </div>
-        <div>
+        <div class="text-center">
           <label class="text-rose-200" for="azimuth">Azimuth: </label>
           <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="359" id="azimuth" name="azimuth">
         </div>
       </div>
-      <div class="sub_cont">
-        <div>
+      <div class="flex flex-col align-center">
+        <div class="text-center">
           <label class="text-rose-200" for="lat">Latitude: </label>
           <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-90" max="90" id="lat" name="lat">
         </div>
-        <div>
+        <div class="text-center">
           <label class="text-rose-200" for="lon">Longitude:</label>
           <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-180" max="180" id="lon" name="lon">
         </div>
@@ -60,42 +60,46 @@
     <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Submit</button>
     <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="save">Save</button>
   </form>
-</div>
-<div class="data_cont">
-  <div class="barchart">
-    <canvas id="barchart" class="chartjs"></canvas>
+  <div class="flex">
+    <div class="flex flex-col flex-1 max-w-[1000px] min-h-[0px] min-w-[355px]">
+      <div class="flex-auto barchart">
+        <canvas id="barchart"></canvas>
+      </div>
+      <div class="flex-auto barchart">
+        <canvas id="barchart2"></canvas>
+      </div>
+    </div>
+    <div class="flex flex-col justify-around flex-1 min-h-[0px] annual_cont ">
+      <div class="text-center">
+        <p class="text-rose-200">Annual AC production:</p><div class="text-rose-400 font-bold" id="ac_annual"></div>
+      </div>
+      <div class="text-center">
+        <p class="text-rose-200">Annual Solar Radiation:</p> <div class="text-rose-400 font-bold" id="solrad_annual"></div>
+      </div>
+      <div class="text-center">
+        <p class="text-rose-200">Capacity Factor:</p><div class="text-rose-400 font-bold" id="capacity_factor"></div>
+      </div>
+      <div class="text-center">
+        <p class="text-rose-200">Optimized Tilt and Annual AC ouput:</p><div class="text-rose-400 font-bold" id="optimizeddata"></div><div id="loadingsign" class="loadinghide"></div>
+      </div>
+    </div>
   </div>
-  <div class="annual_cont">
-    <div>
-      <p class="text-rose-200">Annual AC production:</p><div class="text-rose-400 font-bold" id="ac_annual"></div>
-    </div>
-    <div>
-      <p class="text-rose-200">Annual Solar Radiation:</p> <div class="text-rose-400 font-bold" id="solrad_annual"></div>
-    </div>
-    <div>
-      <p class="text-rose-200">Capacity Factor:</p><div class="text-rose-400 font-bold" id="capacity_factor"></div>
-    </div>
-    <div>
-      <p class="text-rose-200">Optimized Tilt and Annual AC ouput:</p><div class="text-rose-400 font-bold" id="optimizeddata"></div><div id="loadingsign" class="loadinghide"></div>
-    </div>
+  <div>
+    <form id="retrieve">
+      <label for="system_name">System: </label>
+      <select class='border p-2 bg-red-300 rounded-s-sx' name="system_name" id="system_name">
+        <option value="">Choose a System</option>
+      {% for system in systemlist %}
+        <option value='{{ system }}'>{{ system }}</option>
+      {% empty %}
+        <div>No Systems Saved</div>
+      {% endfor %}
+      </select>
+      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Retrieve</button>
+      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="deleteconfig">Delete</button>
+      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="optimizeoutput">Optimize</button>
+    </form>
   </div>
-</div>
-
-<div>
-  <form id="retrieve">
-    <label for="system_name">System: </label>
-    <select class='border p-2 bg-red-300 rounded-s-sx' name="system_name" id="system_name">
-      <option value="">Choose a System</option>
-    {% for system in systemlist %}
-      <option value='{{ system }}'>{{ system }}</option>
-    {% empty %}
-      <div>No Systems Saved</div>
-    {% endfor %}
-    </select>
-    <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Retrieve</button>
-    <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="deleteconfig">Delete</button>
-    <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="optimizeoutput">Optimize</button>
-  </form>
 </div>
 <a href="{% url 'users:logout' %}">Log Out</a>
 

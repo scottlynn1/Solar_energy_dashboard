@@ -33,6 +33,39 @@ const barchart = new Chart(document.getElementById('barchart'), {
   }
   });
 
+  const barchart2 = new Chart(document.getElementById('barchart2'), {
+    type: "bar", 
+    data: {
+      labels: [], 
+      datasets: [{
+        label: "Plane of Irradiance kWh/m^2", 
+        data: [],
+        borderColor: '#7C372A', 
+        backgroundColor: '#992417',
+        yAxisID: 'left'
+      }, {
+        label: "Monthly Solar Radiation kWh/m^2/day",
+        data: [],
+        borderColor: '#7C372A',
+        backgroundColor: '#94401c',
+        yAxisID: 'right'
+      }
+    ]},
+    options: {
+      scales: {
+        left: {
+          type: 'linear',
+          position: 'left',
+        },
+        right: {
+          type: 'linear',
+          position: 'right',
+        }},
+      responsive: true,
+      maintainAspectRatio: false,
+    }
+    });
+
 function addData(chart, data) {
   data.forEach(row => {
     chart.data.labels.push(row.month);
@@ -55,6 +88,21 @@ function clearChart(chart) {
 }
 
 const chartoutput = [
+  { month: 'jan', kWh: []},
+  { month: 'feb', kWh: []},
+  { month: 'mar', kWh: []},
+  { month: 'apr', kWh: []},
+  { month: 'may', kWh: []},
+  { month: 'jun', kWh: []},
+  { month: 'jul', kWh: []},
+  { month: 'aug', kWh: []},
+  { month: 'sep', kWh: []},
+  { month: 'oct', kWh: []},
+  { month: 'nov', kWh: []},
+  { month: 'dec', kWh: []},
+];
+
+const chartoutput2 = [
   { month: 'jan', kWh: []},
   { month: 'feb', kWh: []},
   { month: 'mar', kWh: []},
@@ -109,12 +157,16 @@ form.addEventListener('submit', (e) => {
     }
   }).then(response => response.json()).then(returndata => {
     for (let i = 0; i < chartoutput.length; i++) {
-      chartoutput[i].kWh[0] = returndata.dc_monthly[i]
-      chartoutput[i].kWh[1] = returndata.ac_monthly[i]
+      chartoutput[i].kWh[0] = returndata.dc_monthly[i];
+      chartoutput[i].kWh[1] = returndata.ac_monthly[i];
+      chartoutput2[i].kWh[0] = returndata.poa_monthly[i];
+      chartoutput2[i].kWh[1] = returndata.solrad_monthly[i];
     }
     AnnualData.displayData(returndata);
     clearChart(barchart);
     addData(barchart, chartoutput);
+    clearChart(barchart2);
+    addData(barchart2, chartoutput2);
   });
 });
 //
@@ -164,11 +216,15 @@ retrieve.addEventListener('submit', (e) => {
     for (let i = 0; i < chartoutput.length; i++) {
       chartoutput[i].kWh[0] = returndata.output.dc_monthly[i];
       chartoutput[i].kWh[1] = returndata.output.ac_monthly[i];
+      chartoutput2[i].kWh[0] = returndata.output.poa_monthly[i];
+      chartoutput2[i].kWh[1] = returndata.output.solrad_monthly[i];
     }
     [...form.elements].forEach(element => {
       element.value = returndata.sysdata[element.id];
     })
     AnnualData.displayData(returndata.output);
+    clearChart(barchart2);
+    addData(barchart2, chartoutput2);
     clearChart(barchart);
     addData(barchart, chartoutput);
   });
@@ -194,6 +250,7 @@ deleteconfig.addEventListener('click', (e) => {
           system_name.remove(i);
     }
     clearChart(barchart);
+    clearChart(barchart2);
     form.reset();
   });
 });
