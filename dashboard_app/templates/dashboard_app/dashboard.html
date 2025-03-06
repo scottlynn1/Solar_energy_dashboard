@@ -3,6 +3,8 @@
 {% block body %}
 {% csrf_token %}
 <p>Hello, {{user}}!</p>
+<gmp-map center="37.4220656,-122.0840897" zoom="10" map-id="DEMO_MAP_ID" style="height: 400px"></gmp-map>
+
 <div class="flex flex-col">
   <form id="form">
     <div class="flex form">
@@ -61,11 +63,11 @@
     <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="save">Save</button>
   </form>
   <div class="flex">
-    <div class="flex flex-col flex-1 max-w-[1000px] min-h-[0px] min-w-[355px]">
-      <div class="flex-auto barchart">
+    <div class="flex flex-col flex-1 max-w-[1000px] min-h-[0px] min-w-[355px] overflow-x-auto">
+      <div class="flex-auto min-w-[500px] barchart">
         <canvas id="barchart"></canvas>
       </div>
-      <div class="flex-auto barchart">
+      <div class="flex-auto min-w-[500px] barchart">
         <canvas id="barchart2"></canvas>
       </div>
     </div>
