@@ -167,6 +167,17 @@ form.addEventListener('submit', (e) => {
     addData(barchart, chartoutput);
     clearChart(barchart2);
     addData(barchart2, chartoutput2);
+    map.setCenter({lat: Number(form.elements.lat.value), lng: Number(form.elements.lon.value)});
+    map.setZoom(8);
+    infoWindow.close();
+    // Create a new InfoWindow.
+    infoWindow = new google.maps.InfoWindow({
+      position: {lat: Number(form.elements.lat.value), lng: Number(form.elements.lon.value)},
+    });
+    infoWindow.setContent(
+      JSON.stringify({lat: Number(form.elements.lat.value), lng: Number(form.elements.lon.value)}, null, 2),
+    );
+    infoWindow.open(map);
   });
 });
 //
