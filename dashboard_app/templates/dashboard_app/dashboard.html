@@ -3,7 +3,8 @@
 {% block body %}
 {% csrf_token %}
 <p>Hello, {{user}}!</p>
-<gmp-map center="37.4220656,-122.0840897" zoom="10" map-id="DEMO_MAP_ID" style="height: 400px"></gmp-map>
+<!-- <gmp-map id='map' center="37.4220656,-122.0840897" zoom="10" map-id="DEMO_MAP_ID" style="height: 400px"></gmp-map> -->
+<div id="map" style="height: 400px"></div>
 
 <div class="flex flex-col">
   <form id="form">
@@ -51,11 +52,11 @@
       <div class="flex flex-col align-center">
         <div class="text-center">
           <label class="text-rose-200" for="lat">Latitude: </label>
-          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-90" max="90" id="lat" name="lat">
+          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" step=".00001" min="-90" max="90" id="lat" name="lat">
         </div>
         <div class="text-center">
           <label class="text-rose-200" for="lon">Longitude:</label>
-          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-180" max="180" id="lon" name="lon">
+          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="numer" step='.00001' min="-180" max="180" id="lon" name="lon">
         </div>
       </div>
     </div>

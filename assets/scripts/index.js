@@ -227,6 +227,17 @@ retrieve.addEventListener('submit', (e) => {
     addData(barchart2, chartoutput2);
     clearChart(barchart);
     addData(barchart, chartoutput);
+    map.setCenter({lat: Number(returndata.sysdata.lat), lng: Number(returndata.sysdata.lon)});
+    map.setZoom(8);
+    infoWindow.close();
+    // Create a new InfoWindow.
+    infoWindow = new google.maps.InfoWindow({
+      position: {lat: Number(returndata.sysdata.lat), lng: Number(returndata.sysdata.lon)},
+    });
+    infoWindow.setContent(
+      JSON.stringify({lat: Number(returndata.sysdata.lat), lng: Number(returndata.sysdata.lon)}, null, 2),
+    );
+    infoWindow.open(map);
   });
 });
 //
@@ -235,7 +246,6 @@ const deleteconfig = document.getElementById('deleteconfig');
 //
 deleteconfig.addEventListener('click', (e) => {
   e.preventDefault();
-  AnnualData.clearData();
   const system_name = document.getElementById('system_name');
   fetch(`retrieve?system_name=${system_name.value}`, {
     method: "DELETE",
@@ -251,6 +261,7 @@ deleteconfig.addEventListener('click', (e) => {
     }
     clearChart(barchart);
     clearChart(barchart2);
+    AnnualData.clearData();
     form.reset();
   });
 });
@@ -288,5 +299,35 @@ optimizeoutput.addEventListener('click', (e) => {
     console.error('Fetch', error)
   });
 });
+
 //
+
+const myLatlng = { lat: 40.773, lng: -96.379 }
+const map = new google.maps.Map(document.getElementById("map"), {
+  zoom: 4,
+  center: myLatlng,
+});
+console.log(map.center.toJSON())
+let infoWindow = new google.maps.InfoWindow({
+  content: "Click the map to get Lat/Lng!",
+  position: myLatlng,
+});
+
+infoWindow.open(map);
+
+map.addListener("click", (mapsMouseEvent) => {
+  // Close the current InfoWindow.
+  infoWindow.close();
+  // Create a new InfoWindow.
+  infoWindow = new google.maps.InfoWindow({
+    position: mapsMouseEvent.latLng,
+  });
+  infoWindow.setContent(
+    JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2),
+  );
+  infoWindow.open(map);
+  form.elements.lat.value = Math.round(mapsMouseEvent.latLng.toJSON().lat*100000)/100000;
+  form.elements.lon.value = Math.round(mapsMouseEvent.latLng.toJSON().lng*100000)/100000;
+});
+
 };
