@@ -4,9 +4,9 @@
 {% csrf_token %}
 <p>Hello, {{user}}!</p>
 <!-- <gmp-map id='map' center="37.4220656,-122.0840897" zoom="10" map-id="DEMO_MAP_ID" style="height: 400px"></gmp-map> -->
-<div id="map" style="height: 400px"></div>
 
 <div class="flex flex-col">
+  <div id="map" class="h-[400px] max-w-[1098px] w-full"></div>
   <form id="form">
     <div class="flex form">
       <div class="flex flex-col align-center">
