@@ -16,6 +16,28 @@
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="500000" id="system_capacity" name="system_capacity">
           </div>
           <div class="text-center">
+            <label class="text-rose-200" for="tilt">Tilt: </label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="90" id="tilt" name="tilt">
+          </div>
+        </div>
+        <div class="flex flex-col align-center">
+          <div class="text-center">
+            <label class="text-rose-200" for="losses">losses: </label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-5" max='95' id="losses" name="losses">
+          </div>
+          <div class="text-center">
+            <label class="text-rose-200" for="azimuth">Azimuth: </label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="359" id="azimuth" name="azimuth">
+          </div>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex flex-col align-center">
+          <div class="text-center">
+            <label class="text-rose-200" for="lat">Latitude: </label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" step=".00001" min="-90" max="90" id="lat" name="lat">
+          </div>
+          <div class="text-center">
             <label class="text-rose-200" for="module_type">module type: </label>
             <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="module_type" id="module_type">
               <option value="0">Standard</option>
@@ -26,8 +48,8 @@
         </div>
         <div class="flex flex-col align-center">
           <div class="text-center">
-            <label class="text-rose-200" for="losses">losses: </label>
-            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-5" max='95' id="losses" name="losses">
+            <label class="text-rose-200" for="lon">Longitude:</label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="numer" step='.00001' min="-180" max="180" id="lon" name="lon">
           </div>
           <div class="text-center">
             <label class="text-rose-200" for="array_type">array type: </label>
@@ -38,28 +60,6 @@
               <option value="3">1-Axis Backtracking</option>
               <option value="4">2-Axis</option>
             </select>
-          </div>
-        </div>
-      </div>
-      <div class="flex">
-        <div class="flex flex-col align-center">
-          <div class="text-center">
-            <label class="text-rose-200" for="tilt">Tilt: </label>
-            <input class='border p-2 w-full bg-red-300 rounded-s-sx' class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="90" id="tilt" name="tilt">
-          </div>
-          <div class="text-center">
-            <label class="text-rose-200" for="azimuth">Azimuth: </label>
-            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="359" id="azimuth" name="azimuth">
-          </div>
-        </div>
-        <div class="flex flex-col align-center">
-          <div class="text-center">
-            <label class="text-rose-200" for="lat">Latitude: </label>
-            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" step=".00001" min="-90" max="90" id="lat" name="lat">
-          </div>
-          <div class="text-center">
-            <label class="text-rose-200" for="lon">Longitude:</label>
-            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="numer" step='.00001' min="-180" max="180" id="lon" name="lon">
           </div>
         </div>
       </div>
