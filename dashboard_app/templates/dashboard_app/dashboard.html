@@ -5,64 +5,68 @@
 <p>Hello, {{user}}!</p>
 <!-- <gmp-map id='map' center="37.4220656,-122.0840897" zoom="10" map-id="DEMO_MAP_ID" style="height: 400px"></gmp-map> -->
 
-<div class="flex flex-col">
-  <div id="map" class="h-[400px] max-w-[1098px] w-full"></div>
-  <form id="form">
-    <div class="flex form">
-      <div class="flex flex-col align-center">
-        <div class="text-center">
-          <label class="text-rose-200" for="system_capacity">system capacity: </label>
-          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="500000" id="system_capacity" name="system_capacity">
+<div class="flex flex-col p-[1rem] bg-rust">
+  <div class="flex">
+    <div id="map" class="h-[400px] max-w-[1098px] w-full"></div>
+    <form id="form" class="flex flex-col p-[1rem] bg-rust max-w-[1241px] justify-around">
+      <div class="flex">
+        <div class="flex flex-col align-center">
+          <div class="text-center">
+            <label class="text-rose-200" for="system_capacity">system capacity: </label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="500000" id="system_capacity" name="system_capacity">
+          </div>
+          <div class="text-center">
+            <label class="text-rose-200" for="module_type">module type: </label>
+            <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="module_type" id="module_type">
+              <option value="0">Standard</option>
+              <option value="1">Premium</option>
+              <option value="2">Thin Film</option>
+            </select>
+          </div>
         </div>
-        <div class="text-center">
-          <label class="text-rose-200" for="module_type">module type: </label>
-          <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="module_type" id="module_type">
-            <option value="0">Standard</option>
-            <option value="1">Premium</option>
-            <option value="2">Thin Film</option>
-          </select>
-        </div>
-      </div>
-      <div class="flex flex-col align-center">
-        <div class="text-center">
-          <label class="text-rose-200" for="losses">losses: </label>
-          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-5" max='95' id="losses" name="losses">
-        </div>
-        <div class="text-center">
-          <label class="text-rose-200" for="array_type">array type: </label>
-          <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="array_type" id="array_type">
-            <option value="0">Fixed - Open Rack</option>
-            <option value="1">Fixed - Roof Mounted</option>
-            <option value="2">1-Axis</option>
-            <option value="3">1-Axis Backtracking</option>
-            <option value="4">2-Axis</option>
-          </select>
-        </div>
-      </div>
-      <div class="flex flex-col align-center">
-        <div class="text-center">
-          <label class="text-rose-200" for="tilt">Tilt: </label>
-          <input class='border p-2 w-full bg-red-300 rounded-s-sx' class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="90" id="tilt" name="tilt">
-        </div>
-        <div class="text-center">
-          <label class="text-rose-200" for="azimuth">Azimuth: </label>
-          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="359" id="azimuth" name="azimuth">
+        <div class="flex flex-col align-center">
+          <div class="text-center">
+            <label class="text-rose-200" for="losses">losses: </label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-5" max='95' id="losses" name="losses">
+          </div>
+          <div class="text-center">
+            <label class="text-rose-200" for="array_type">array type: </label>
+            <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="array_type" id="array_type">
+              <option value="0">Fixed - Open Rack</option>
+              <option value="1">Fixed - Roof Mounted</option>
+              <option value="2">1-Axis</option>
+              <option value="3">1-Axis Backtracking</option>
+              <option value="4">2-Axis</option>
+            </select>
+          </div>
         </div>
       </div>
-      <div class="flex flex-col align-center">
-        <div class="text-center">
-          <label class="text-rose-200" for="lat">Latitude: </label>
-          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" step=".00001" min="-90" max="90" id="lat" name="lat">
+      <div class="flex">
+        <div class="flex flex-col align-center">
+          <div class="text-center">
+            <label class="text-rose-200" for="tilt">Tilt: </label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="90" id="tilt" name="tilt">
+          </div>
+          <div class="text-center">
+            <label class="text-rose-200" for="azimuth">Azimuth: </label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="359" id="azimuth" name="azimuth">
+          </div>
         </div>
-        <div class="text-center">
-          <label class="text-rose-200" for="lon">Longitude:</label>
-          <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="numer" step='.00001' min="-180" max="180" id="lon" name="lon">
+        <div class="flex flex-col align-center">
+          <div class="text-center">
+            <label class="text-rose-200" for="lat">Latitude: </label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" step=".00001" min="-90" max="90" id="lat" name="lat">
+          </div>
+          <div class="text-center">
+            <label class="text-rose-200" for="lon">Longitude:</label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="numer" step='.00001' min="-180" max="180" id="lon" name="lon">
+          </div>
         </div>
       </div>
-    </div>
-    <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Submit</button>
-    <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="save">Save</button>
-  </form>
+      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Submit</button>
+      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="save">Save</button>
+    </form>
+  </div>
   <div class="flex">
     <div class="flex flex-col flex-1 max-w-[1000px] min-h-[0px] min-w-[355px] overflow-x-auto">
       <div class="flex-auto min-w-[500px] barchart">

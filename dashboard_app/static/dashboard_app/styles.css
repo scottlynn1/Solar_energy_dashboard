@@ -3,13 +3,6 @@ body {
   background-color: rgb(172, 75, 58);
 }
 
-.form {
-  padding: 1rem;
-  background-color: rgb(158, 68, 52);
-  max-width: 1241px;
-}
-
-
 .barchart {
   background-color: rgb(189, 88, 70);
   width: 100%;
@@ -23,7 +16,7 @@ body {
 .annual_cont {
   background-color: rgb(158, 68, 52);
   padding: 1rem;
-  max-width: 241px;
+  /* max-width: 241px; */
 }
 
 
