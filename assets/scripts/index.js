@@ -127,8 +127,9 @@ const AnnualData = (function () {
   const displayData = function(annualdata) {
       ac_annual.textContent = '--';
       solrad_annual.textContent = '--';
-      optimizeddata.textContent = '--';
       capacity_factor.textContent = '--';
+      optimizeddata.textContent = '';
+      optimizeoutput.hidden = false;
       ac_annual.textContent = Math.round(annualdata.ac_annual);
       solrad_annual.textContent = Math.round(annualdata.solrad_annual);
       capacity_factor.textContent = Math.round(annualdata.capacity_factor);
@@ -137,8 +138,9 @@ const AnnualData = (function () {
   const clearData = function() {
     ac_annual.textContent = '--';
     solrad_annual.textContent = '--';
-    optimizeddata.textContent = '--';
     capacity_factor.textContent = '--';
+    optimizeddata.textContent = '';
+    optimizeoutput.hidden = false;
   }
 
   return {ac_annual, solrad_annual, capacity_factor, optimizeddata, displayData, clearData}
@@ -283,6 +285,7 @@ const optimizeoutput = document.getElementById('optimizeoutput');
 //
 optimizeoutput.addEventListener('click', (e) => {
   e.preventDefault();
+  optimizeoutput.hidden = true;
   loadingsign.className = "loadingshow";
   const formdata = new FormData(form);
   formdata.append('ac_annual', ac_annual.textContent);
@@ -307,6 +310,7 @@ optimizeoutput.addEventListener('click', (e) => {
     AnnualData.optimizeddata.textContent = `${Math.round(returndata.optimal_ac_annual)} for ${returndata.optimal_tilt} degrees tilt`;
   }).catch(error => {
     loadingsign.className = 'loadinghide';
+    optimizeoutput.hidden = false;
     console.error('Fetch', error)
   });
 });
