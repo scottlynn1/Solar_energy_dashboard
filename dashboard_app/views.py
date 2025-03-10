@@ -12,6 +12,10 @@ from django.utils.decorators import method_decorator
 import asyncio
 import httpx
 import timeit
+<<<<<<< HEAD
+=======
+
+>>>>>>> Rearrange
 
 solar_api_key = os.environ.get('solar_api_key')
 # Create your views here.

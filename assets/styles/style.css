@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+@theme {
+  --color-rust: rgb(158, 68, 52);
+}
