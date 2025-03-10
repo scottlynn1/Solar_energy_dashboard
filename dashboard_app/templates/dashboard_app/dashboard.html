@@ -5,7 +5,7 @@
 <header class="flex justify-between bg-rust p-2 border-b-2 border-rose-200">
   <div>
     <form id="retrieve">
-      <label for="system_name">System: </label>
+      <label for="system_name" class="text-rose-200">System: </label>
       <select class='border p-2 bg-red-300 rounded-s-sx' name="system_name" id="system_name">
         <option value="">Choose a System</option>
       {% for system in systemlist %}
@@ -19,9 +19,9 @@
       <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="optimizeoutput">Optimize</button>
     </form>
   </div>
-  <div class="flex">
-    <p>Hello, {{user}}!</p>
-    <a href="{% url 'users:logout' %}">Log Out</a>
+  <div class="flex text-rose-200">
+    <p class="p-2">Hello, {{user}}!</p>
+    <a href="{% url 'users:logout' %}"><button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded">Log Out</button></a>
   </div>
 </header>
 <!-- <gmp-map id='map' center="37.4220656,-122.0840897" zoom="10" map-id="DEMO_MAP_ID" style="height: 400px"></gmp-map> -->
@@ -90,16 +90,16 @@
   </div>
   <div class="flex justify-around flex-1 min-h-[0px] annual_cont ">
     <div class="text-center">
-      <p class="text-rose-200">Annual AC production:</p><div class="text-rose-400 font-bold" id="ac_annual"></div>
+      <p class="text-rose-200">Annual AC production</p><div class="text-rose-400 font-bold" id="ac_annual">--</div>
     </div>
     <div class="text-center">
-      <p class="text-rose-200">Annual Solar Radiation:</p> <div class="text-rose-400 font-bold" id="solrad_annual"></div>
+      <p class="text-rose-200">Annual Solar Radiation</p> <div class="text-rose-400 font-bold" id="solrad_annual">--</div>
     </div>
     <div class="text-center">
-      <p class="text-rose-200">Capacity Factor:</p><div class="text-rose-400 font-bold" id="capacity_factor"></div>
+      <p class="text-rose-200">Capacity Factor</p><div class="text-rose-400 font-bold" id="capacity_factor">--</div>
     </div>
     <div class="text-center">
-      <p class="text-rose-200">Optimized Tilt and Annual AC ouput:</p><div class="text-rose-400 font-bold" id="optimizeddata"></div><div id="loadingsign" class="loadinghide"></div>
+      <p class="text-rose-200">Optimized Tilt and Annual AC ouput</p><div class="text-rose-400 font-bold" id="optimizeddata">--</div><div id="loadingsign" class="loadinghide"></div>
     </div>
   </div>
   <div class="flex flex-col lg:flex-row flex-1 min-h-[0px] min-w-[355px] overflow-x-auto min-[580px]:overflow-x-visible">

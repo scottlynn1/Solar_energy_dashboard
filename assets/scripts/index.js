@@ -125,20 +125,20 @@ const AnnualData = (function () {
   const optimizeddata = document.getElementById('optimizeddata');
 
   const displayData = function(annualdata) {
-      ac_annual.textContent = '';
-      solrad_annual.textContent = '';
-      optimizeddata.textContent = '';
-      capacity_factor.textContent = '';
+      ac_annual.textContent = '--';
+      solrad_annual.textContent = '--';
+      optimizeddata.textContent = '--';
+      capacity_factor.textContent = '--';
       ac_annual.textContent = Math.round(annualdata.ac_annual);
       solrad_annual.textContent = Math.round(annualdata.solrad_annual);
       capacity_factor.textContent = Math.round(annualdata.capacity_factor);
     };
 
   const clearData = function() {
-    ac_annual.textContent = '';
-    solrad_annual.textContent = '';
-    optimizeddata.textContent = '';
-    capacity_factor.textContent = '';
+    ac_annual.textContent = '--';
+    solrad_annual.textContent = '--';
+    optimizeddata.textContent = '--';
+    capacity_factor.textContent = '--';
   }
 
   return {ac_annual, solrad_annual, capacity_factor, optimizeddata, displayData, clearData}
