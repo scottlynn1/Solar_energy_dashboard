@@ -4,21 +4,25 @@
 {% csrf_token %}
 <header class="flex justify-between bg-rust p-2 border-b-2 border-rose-200">
   <div>
-    <form id="retrieve">
-      <label for="system_name" class="text-rose-200">System: </label>
-      <select class='border p-2 bg-red-300 rounded-s-sx' name="system_name" id="system_name">
-        <option value="">Choose a System</option>
-      {% for system in systemlist %}
-        <option value='{{ system }}'>{{ system }}</option>
-      {% empty %}
-        <div>No Systems Saved</div>
-      {% endfor %}
-      </select>
-      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Retrieve</button>
-      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="deleteconfig">Delete</button>
+    <form class="flex flex-col md:flex-row align-center" id="retrieve">
+      <div class="text-center p-1">
+        <label for="system_name" class="text-rose-200">System: </label>
+        <select class='border p-2 bg-red-300 rounded-s-sx' name="system_name" id="system_name">
+          <option value="">Choose a System</option>
+        {% for system in systemlist %}
+          <option value='{{ system }}'>{{ system }}</option>
+        {% empty %}
+          <div>No Systems Saved</div>
+        {% endfor %}
+        </select>
+      </div>
+      <div class="p-1">
+        <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Retrieve</button>
+        <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="deleteconfig">Delete</button>
+      </div>
     </form>
   </div>
-  <div class="flex text-rose-200">
+  <div class="flex flex-col md:flex-row text-rose-200">
     <p class="p-2">Hello, {{user}}!</p>
     <a href="{% url 'users:logout' %}"><button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded">Log Out</button></a>
   </div>
