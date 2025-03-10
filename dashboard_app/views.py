@@ -11,6 +11,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 import asyncio
 import httpx
+import timeit
 
 solar_api_key = os.environ.get('solar_api_key')
 # Create your views here.
@@ -108,6 +109,7 @@ def retrieve(request):
 
 @login_required(login_url='/login')
 async def optimize(request):
+  start = timeit.timeit()
   is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
   if is_ajax:
     if request.method == 'GET':
@@ -130,4 +132,6 @@ async def optimize(request):
           ac_list[tilt] = outputdata['outputs']['ac_annual']
           tilt = tilt + 1
         res = max(ac_list, key=ac_list.get)
+        end = timeit.timeit()
+        print(end - start)
         return HttpResponse(json.dumps({'optimal_ac_annual': ac_list[res], 'optimal_tilt': res}))
