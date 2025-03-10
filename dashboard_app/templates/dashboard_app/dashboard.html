@@ -3,14 +3,16 @@
 {% block body %}
 {% csrf_token %}
 <p>Hello, {{user}}!</p>
+<a href="{% url 'users:logout' %}">Log Out</a>
+
 <!-- <gmp-map id='map' center="37.4220656,-122.0840897" zoom="10" map-id="DEMO_MAP_ID" style="height: 400px"></gmp-map> -->
 
 <div class="flex flex-col p-[1rem] bg-rust">
-  <div class="flex">
+  <div class="flex flex-col md:flex-row">
     <div id="map" class="h-[400px] max-w-[1098px] w-full"></div>
     <form id="form" class="flex flex-col p-[1rem] bg-rust max-w-[1241px] justify-around">
       <div class="flex">
-        <div class="flex flex-col align-center">
+        <div class="flex flex-col w-1/2 align-center">
           <div class="text-center">
             <label class="text-rose-200" for="system_capacity">system capacity: </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="500000" id="system_capacity" name="system_capacity">
@@ -20,7 +22,7 @@
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="90" id="tilt" name="tilt">
           </div>
         </div>
-        <div class="flex flex-col align-center">
+        <div class="flex flex-col w-1/2 align-center">
           <div class="text-center">
             <label class="text-rose-200" for="losses">losses: </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-5" max='95' id="losses" name="losses">
@@ -32,7 +34,7 @@
         </div>
       </div>
       <div class="flex">
-        <div class="flex flex-col align-center">
+        <div class="flex flex-col w-1/2 align-center">
           <div class="text-center">
             <label class="text-rose-200" for="lat">Latitude: </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" step=".00001" min="-90" max="90" id="lat" name="lat">
@@ -46,7 +48,7 @@
             </select>
           </div>
         </div>
-        <div class="flex flex-col align-center">
+        <div class="flex flex-col w-1/2 align-center">
           <div class="text-center">
             <label class="text-rose-200" for="lon">Longitude:</label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="numer" step='.00001' min="-180" max="180" id="lon" name="lon">
@@ -67,28 +69,26 @@
       <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="save">Save</button>
     </form>
   </div>
-  <div class="flex">
-    <div class="flex flex-col flex-1 max-w-[1000px] min-h-[0px] min-w-[355px] overflow-x-auto">
-      <div class="flex-auto min-w-[500px] barchart">
-        <canvas id="barchart"></canvas>
-      </div>
-      <div class="flex-auto min-w-[500px] barchart">
-        <canvas id="barchart2"></canvas>
-      </div>
+  <div class="flex justify-around flex-1 min-h-[0px] annual_cont ">
+    <div class="text-center">
+      <p class="text-rose-200">Annual AC production:</p><div class="text-rose-400 font-bold" id="ac_annual"></div>
     </div>
-    <div class="flex flex-col justify-around flex-1 min-h-[0px] annual_cont ">
-      <div class="text-center">
-        <p class="text-rose-200">Annual AC production:</p><div class="text-rose-400 font-bold" id="ac_annual"></div>
-      </div>
-      <div class="text-center">
-        <p class="text-rose-200">Annual Solar Radiation:</p> <div class="text-rose-400 font-bold" id="solrad_annual"></div>
-      </div>
-      <div class="text-center">
-        <p class="text-rose-200">Capacity Factor:</p><div class="text-rose-400 font-bold" id="capacity_factor"></div>
-      </div>
-      <div class="text-center">
-        <p class="text-rose-200">Optimized Tilt and Annual AC ouput:</p><div class="text-rose-400 font-bold" id="optimizeddata"></div><div id="loadingsign" class="loadinghide"></div>
-      </div>
+    <div class="text-center">
+      <p class="text-rose-200">Annual Solar Radiation:</p> <div class="text-rose-400 font-bold" id="solrad_annual"></div>
+    </div>
+    <div class="text-center">
+      <p class="text-rose-200">Capacity Factor:</p><div class="text-rose-400 font-bold" id="capacity_factor"></div>
+    </div>
+    <div class="text-center">
+      <p class="text-rose-200">Optimized Tilt and Annual AC ouput:</p><div class="text-rose-400 font-bold" id="optimizeddata"></div><div id="loadingsign" class="loadinghide"></div>
+    </div>
+  </div>
+  <div class="flex flex-1 min-h-[0px] min-w-[355px] overflow-x-auto">
+    <div class="flex-auto min-w-[500px] barchart">
+      <canvas id="barchart"></canvas>
+    </div>
+    <div class="flex-auto min-w-[500px] barchart">
+      <canvas id="barchart2"></canvas>
     </div>
   </div>
   <div>
@@ -108,6 +108,5 @@
     </form>
   </div>
 </div>
-<a href="{% url 'users:logout' %}">Log Out</a>
 
 {% endblock %}
