@@ -2,9 +2,28 @@
 
 {% block body %}
 {% csrf_token %}
-<p>Hello, {{user}}!</p>
-<a href="{% url 'users:logout' %}">Log Out</a>
-
+<header class="flex justify-between bg-rust p-2 border-b-2 border-rose-200">
+  <div>
+    <form id="retrieve">
+      <label for="system_name">System: </label>
+      <select class='border p-2 bg-red-300 rounded-s-sx' name="system_name" id="system_name">
+        <option value="">Choose a System</option>
+      {% for system in systemlist %}
+        <option value='{{ system }}'>{{ system }}</option>
+      {% empty %}
+        <div>No Systems Saved</div>
+      {% endfor %}
+      </select>
+      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Retrieve</button>
+      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="deleteconfig">Delete</button>
+      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="optimizeoutput">Optimize</button>
+    </form>
+  </div>
+  <div class="flex">
+    <p>Hello, {{user}}!</p>
+    <a href="{% url 'users:logout' %}">Log Out</a>
+  </div>
+</header>
 <!-- <gmp-map id='map' center="37.4220656,-122.0840897" zoom="10" map-id="DEMO_MAP_ID" style="height: 400px"></gmp-map> -->
 
 <div class="flex flex-col p-[1rem] bg-rust">
@@ -90,22 +109,6 @@
     <div class="flex-auto min-w-[500px] barchart">
       <canvas id="barchart2"></canvas>
     </div>
-  </div>
-  <div>
-    <form id="retrieve">
-      <label for="system_name">System: </label>
-      <select class='border p-2 bg-red-300 rounded-s-sx' name="system_name" id="system_name">
-        <option value="">Choose a System</option>
-      {% for system in systemlist %}
-        <option value='{{ system }}'>{{ system }}</option>
-      {% empty %}
-        <div>No Systems Saved</div>
-      {% endfor %}
-      </select>
-      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Retrieve</button>
-      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="deleteconfig">Delete</button>
-      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="optimizeoutput">Optimize</button>
-    </form>
   </div>
 </div>
 
