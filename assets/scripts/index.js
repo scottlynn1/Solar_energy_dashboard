@@ -125,19 +125,19 @@ const AnnualData = (function () {
   const optimizeddata = document.getElementById('optimizeddata');
 
   const displayData = function(annualdata) {
-      ac_annual.textContent = '-- kWh';
-      solrad_annual.textContent = '-- kWh/m^2/day';
+      ac_annual.textContent = '--';
+      solrad_annual.textContent = '--';
       capacity_factor.textContent = '--';
       optimizeddata.textContent = '';
       optimizeoutput.hidden = false;
-      ac_annual.textContent = `${Math.round(annualdata.ac_annual)}   kWh`;
-      solrad_annual.textContent = `${Math.round(annualdata.solrad_annual)}   kWh/m^2/day`;
+      ac_annual.textContent = Math.round(annualdata.ac_annual);
+      solrad_annual.textContent = Math.round(annualdata.solrad_annual);
       capacity_factor.textContent = Math.round(annualdata.capacity_factor);
     };
 
   const clearData = function() {
-    ac_annual.textContent = '-- kWh';
-    solrad_annual.textContent = '-- kWh/m^2/day';
+    ac_annual.textContent = '--';
+    solrad_annual.textContent = '--';
     capacity_factor.textContent = '--';
     optimizeddata.textContent = '';
     optimizeoutput.hidden = false;
