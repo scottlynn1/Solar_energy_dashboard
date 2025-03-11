@@ -2,6 +2,8 @@
 
 {% block body %}
 {% csrf_token %}
+{% load static %}
+
 <header class="flex justify-between bg-rust p-2 border-b-2 border-rose-200">
   <div>
     <form class="flex flex-col md:flex-row align-center" id="retrieve">
@@ -17,14 +19,14 @@
         </select>
       </div>
       <div class="p-1">
-        <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="submit">Retrieve</button>
-        <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="deleteconfig">Delete</button>
+        <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded active:bg-rose-300" type="submit">Retrieve</button>
+        <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded active:bg-rose-300" type="button" id="deleteconfig">Delete</button>
       </div>
     </form>
   </div>
   <div class="flex flex-col md:flex-row text-rose-200">
     <p class="p-2">Hello, {{user}}!</p>
-    <a href="{% url 'users:logout' %}"><button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded">Log Out</button></a>
+    <a href="{% url 'users:logout' %}"><button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded active:bg-rose-300">Log Out</button></a>
   </div>
 </header>
 <!-- <gmp-map id='map' center="37.4220656,-122.0840897" zoom="10" map-id="DEMO_MAP_ID" style="height: 400px"></gmp-map> -->
@@ -36,21 +38,53 @@
       <div class="flex">
         <div class="flex flex-col w-1/2">
           <div class="text-center">
-            <label class="text-rose-200" for="system_capacity">system capacity: </label>
+            <label class="text-rose-200" for="system_capacity">system capacity (kWh) 
+              <div class="tooltip"><img 
+                src="{% static 'images/tooltip.svg' %}"
+                alt='tool tip image'
+                width="15"
+                heigth="15"/>
+                <span class="tooltiptext">This is the nameplate capacity of the system.</span>
+              </div>
+            </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="500000" id="system_capacity" name="system_capacity">
           </div>
           <div class="text-center">
-            <label class="text-rose-200" for="tilt">Tilt: </label>
+            <label class="text-rose-200" for="tilt">Tilt (degrees) 
+              <div class="tooltip"><img 
+                src="{% static 'images/tooltip.svg' %}"
+                alt='tool tip image'
+                width="15"
+                heigth="15"/>
+                <span class="tooltiptext">Angle of tilt from ground in degrees.</span>
+              </div>
+            </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="90" id="tilt" name="tilt">
           </div>
         </div>
         <div class="flex flex-col w-1/2">
           <div class="text-center">
-            <label class="text-rose-200" for="losses">losses: </label>
+            <label class="text-rose-200" for="losses">Losses (precentage) 
+              <div class="tooltip"><img 
+                src="{% static 'images/tooltip.svg' %}"
+                alt='tool tip image'
+                width="15"
+                heigth="15"/>
+                <span class="tooltiptext">System Losses as a precentage. Include Inverter inefficiency, thermal loss, etc.</span>
+              </div>
+            </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-5" max='95' id="losses" name="losses">
           </div>
           <div class="text-center">
-            <label class="text-rose-200" for="azimuth">Azimuth: </label>
+            <label class="text-rose-200" for="azimuth">Azimuth (degrees) 
+              <div class="tooltip"><img 
+                src="{% static 'images/tooltip.svg' %}"
+                alt='tool tip image'
+                width="15"
+                heigth="15"/>
+                <span class="tooltiptext">Angle clockwise from north that the system faces. 180 is south facing, 0 is north facing. For one-axis, use axis of rotation for system direction. Anlge does not apply for two-axis systems. </span>
+              </div>
+            </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="359" id="azimuth" name="azimuth">
           </div>
         </div>
@@ -58,11 +92,27 @@
       <div class="flex">
         <div class="flex flex-col w-1/2">
           <div class="text-center">
-            <label class="text-rose-200" for="lat">Latitude: </label>
+            <label class="text-rose-200" for="lat">Latitude 
+              <div class="tooltip"><img 
+                src="{% static 'images/tooltip.svg' %}"
+                alt='tool tip image'
+                width="15"
+                heigth="15"/>
+                <span class="tooltiptext">Range -90 to 90 with up to five decimal place precision</span>
+              </div>
+            </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" step=".00001" min="-90" max="90" id="lat" name="lat">
           </div>
           <div class="text-center">
-            <label class="text-rose-200" for="module_type">module type: </label>
+            <label class="text-rose-200" for="module_type">module type 
+              <div class="tooltip"><img 
+                src="{% static 'images/tooltip.svg' %}"
+                alt='tool tip image'
+                width="15"
+                heigth="15"/>
+                <span class="tooltiptext">If module type is unkown, select Standard.</span>
+              </div>
+            </label>
             <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="module_type" id="module_type">
               <option value="0">Standard</option>
               <option value="1">Premium</option>
@@ -72,11 +122,25 @@
         </div>
         <div class="flex flex-col w-1/2">
           <div class="text-center">
-            <label class="text-rose-200" for="lon">Longitude:</label>
+            <label class="text-rose-200" for="lon">Longitude 
+              <div class="tooltip"><img 
+                src="{% static 'images/tooltip.svg' %}"
+                alt='tool tip image'
+                width="15"
+                heigth="15"/>
+                <span class="tooltiptext">Range -180 to 180 with up to five decimal place precision</span>
+              </div>
+            </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="numer" step='.00001' min="-180" max="180" id="lon" name="lon">
           </div>
           <div class="text-center">
-            <label class="text-rose-200" for="array_type">array type: </label>
+            <label class="text-rose-200" for="array_type">array type <div class="tooltip"><img 
+              src="{% static 'images/tooltip.svg' %}"
+              alt='tool tip image'
+              width="15"
+              heigth="15"/>
+              <span class="tooltiptext">For stationary systems without tracking, select Fixed.</span>
+            </div></label>
             <select class='border p-2 w-full bg-red-300 rounded-s-sx' name="array_type" id="array_type">
               <option value="0">Fixed - Open Rack</option>
               <option value="1">Fixed - Roof Mounted</option>
@@ -88,8 +152,8 @@
         </div>
       </div>
       <div class="flex flex-row md:flex-col self-center">
-        <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 m-1 px-4 rounded w-[100px]" type="submit">Submit</button>
-        <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 m-1 px-4 rounded w-[100px]" type="button" id="save">Save</button>
+        <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 m-1 px-4 rounded w-[100px] active:bg-rose-300" type="submit">Submit</button>
+        <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 m-1 px-4 rounded w-[100px] active:bg-rose-300" type="button" id="save">Save</button>
       </div>
     </form>
   </div>
@@ -104,10 +168,10 @@
       <p class="text-rose-200">Capacity Factor</p><div class="text-rose-400 font-bold" id="capacity_factor">--</div>
     </div>
     <div class="flex-1 text-center p-2">
-      <p class="text-rose-200">Optimized Tilt and Annual AC ouput</p>
+      <p class="text-rose-200">Optimal Tilt and Azimuth</p>
       <div class="text-rose-400 font-bold" id="optimizeddata">
       </div><div id="loadingsign" class="loadinghide"></div>
-      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded" type="button" id="optimizeoutput">Optimize</button>
+      <button class="bg-red-800 hover:bg-red-500 text-white font-bold py-2 px-4 rounded active:bg-rose-300" type="button" id="optimizeoutput">Optimize</button>
     </div>
   </div>
   <div class="flex flex-col min-[1098px]:flex-row flex-1 min-h-[0px] min-w-[355px] overflow-x-auto min-[580px]:overflow-x-visible">

@@ -12,10 +12,7 @@ from django.utils.decorators import method_decorator
 import asyncio
 import httpx
 import timeit
-<<<<<<< HEAD
-=======
 
->>>>>>> Rearrange
 
 solar_api_key = os.environ.get('solar_api_key')
 # Create your views here.
@@ -130,7 +127,7 @@ async def optimize(request):
           params['tilt'] = tilt
           outputdatapending = await client.get(
           f"https://developer.nrel.gov/api/pvwatts/v8.json",
-          params=params)
+          params=params, timeout=10)
           print(outputdatapending.headers['X-Ratelimit-Remaining'])
           outputdata = outputdatapending.json()
           ac_list[tilt] = outputdata['outputs']['ac_annual']
