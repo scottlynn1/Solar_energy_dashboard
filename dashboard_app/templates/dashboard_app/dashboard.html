@@ -159,13 +159,19 @@
   </div>
   <div class="flex justify-stretch flex-1 min-h-[0px] annual_cont flex-wrap">
     <div class="flex-1 text-center p-2 border-r-1 border-rose-200">
-      <p class="text-rose-200">Annual AC production</p><div class="text-rose-400 font-bold" id="ac_annual">--</div>
+      <p class="text-rose-200">Annual AC production</p><div class="text-rose-400 font-bold" id="ac_annual">-- <span>kWh</span></div>
     </div>
     <div class="flex-1 text-center p-2 border-r-1 border-rose-200">
-      <p class="text-rose-200">Annual Solar Radiation</p> <div class="text-rose-400 font-bold" id="solrad_annual">--</div>
+      <p class="text-rose-200">Annual Solar Radiation</p> <div class="text-rose-400 font-bold" id="solrad_annual">-- kWh/m^2/day</div>
     </div>
     <div class="flex-1 text-center p-2 border-r-1 border-rose-200">
-      <p class="text-rose-200">Capacity Factor</p><div class="text-rose-400 font-bold" id="capacity_factor">--</div>
+      <p class="text-rose-200">Capacity Factor <span class="tooltip"><img 
+        src="{% static 'images/tooltip.svg' %}"
+        alt='tool tip image'
+        width="15"
+        heigth="15"/>
+        <span class="tooltiptext">The ratio of the system's predicted electrical output in the first year of operation to the nameplate output.</span>
+      </span></p><div class="text-rose-400 font-bold" id="capacity_factor">--</div>
     </div>
     <div class="flex-1 text-center p-2">
       <p class="text-rose-200">Optimal Tilt and Azimuth</p>
