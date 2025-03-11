@@ -125,19 +125,19 @@ const AnnualData = (function () {
   const optimizeddata = document.getElementById('optimizeddata');
 
   const displayData = function(annualdata) {
-      ac_annual.textContent = '-- kWh';
-      solrad_annual.textContent = '-- kWh/m^2/day';
+      ac_annual.textContent = '--';
+      solrad_annual.textContent = '--';
       capacity_factor.textContent = '--';
       optimizeddata.textContent = '';
       optimizeoutput.hidden = false;
-      ac_annual.textContent = `${Math.round(annualdata.ac_annual)}   kWh`;
-      solrad_annual.textContent = `${Math.round(annualdata.solrad_annual)}   kWh/m^2/day`;
+      ac_annual.textContent = Math.round(annualdata.ac_annual);
+      solrad_annual.textContent = Math.round(annualdata.solrad_annual);
       capacity_factor.textContent = Math.round(annualdata.capacity_factor);
     };
 
   const clearData = function() {
-    ac_annual.textContent = '-- kWh';
-    solrad_annual.textContent = '-- kWh/m^2/day';
+    ac_annual.textContent = '--';
+    solrad_annual.textContent = '--';
     capacity_factor.textContent = '--';
     optimizeddata.textContent = '';
     optimizeoutput.hidden = false;
@@ -307,7 +307,7 @@ optimizeoutput.addEventListener('click', (e) => {
   }).then(returndata => {
     loadingsign.className = "loadinghide"
     AnnualData.optimizeddata.textContent = '';
-    AnnualData.optimizeddata.textContent = `${Math.round(returndata.optimal_ac_annual)} for ${returndata.optimal_tilt} degrees tilt`;
+    AnnualData.optimizeddata.textContent = `Tilt: ${Math.round(returndata.optimal_tilt)}  Azimuth: ${returndata.optimal_azimuth} with ${returndata.ac_annual}`;
   }).catch(error => {
     loadingsign.className = 'loadinghide';
     optimizeoutput.hidden = false;
