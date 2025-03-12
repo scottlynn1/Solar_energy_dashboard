@@ -122,97 +122,87 @@ def optimize(request):
       params.pop('ac_annual')
       params["api_key"] = solar_api_key
 
-      while True:
+      for i in range(2):
         print(tilt)
         print(azimuth)
         print(ac_annual)
-        # gets higher and lower ouputs
-        tilt = tilt + 1
-        if tilt < 91:
-          params['tilt'] = str(tilt)
-          response = requests.get(
-          f"https://developer.nrel.gov/api/pvwatts/v8.json",
-          params=params).json()
-          highertiltoutput = int(response['outputs']['ac_annual'])
-          tilt = tilt - 2
-        else:
-          highertiltoutput = 0
-          tilt = tilt - 2
-        if tilt >= 0:
-          params['tilt'] = str(tilt)
-          response = requests.get(
-          f"https://developer.nrel.gov/api/pvwatts/v8.json",
-          params=params).json()
-          lowertiltoutput = int(response['outputs']['ac_annual'])
-        else:
-          lowertiltoutput = 0
-        #greedy search towards tilt peak for azimuth column
-        print(f'tilt: {highertiltoutput}')
-        print(f'tilt: {lowertiltoutput}')
-        print(f'tilt: {ac_annual}')
-        if highertiltoutput > ac_annual:
-          print('moving higher')
-          ac_annual = highertiltoutput
-          tilt = tilt + 2
-          while (tilt + 1) < 91:
-            tilt = tilt + 1
-            params['tilt'] = str(tilt)
-            response = requests.get(
-              f"https://developer.nrel.gov/api/pvwatts/v8.json",
-              params=params).json()
-            higheroutput = int(response['outputs']['ac_annual'])
-            if higheroutput > ac_annual:
-              ac_annual = higheroutput
-            else:
-              tilt = tilt -1
-              params['tilt'] = str(tilt)
-              break
-        elif lowertiltoutput > ac_annual:
-          print('moving lower')
-          ac_annual = lowertiltoutput
-          while (tilt - 1) >= 0:
-            tilt = tilt - 1
-            params['tilt'] = str(tilt)
-            response = requests.get(
-              f"https://developer.nrel.gov/api/pvwatts/v8.json",
-              params=params).json()
-            loweroutput = int(response['outputs']['ac_annual'])
-            if loweroutput > ac_annual:
-              ac_annual = loweroutput
-            else:
-              tilt = tilt + 1
-              params['tilt'] = str(tilt)
-              break
-        else:
-          tilt = tilt + 1
-          params['tilt'] = str(tilt)
-        if int(params['tilt']) == 0:
-          params['azimuth'] = 'any'
-          break
-        #check azimuth peak at tilt row
+
         params['azimuth'] = str(azimuth + 5)
         response = requests.get(
           f"https://developer.nrel.gov/api/pvwatts/v8.json",
           params=params).json()
         higherazimuthoutput = int(response['outputs']['ac_annual'])
+
+        while higherazimuthoutput > ac_annual:
+            print('moving to higher azi')
+            ac_annual = higherazimuthoutput
+            azimuth = azimuth + 5
+            params['azimuth'] = str(azimuth + 5)
+            response = requests.get(
+              f"https://developer.nrel.gov/api/pvwatts/v8.json",
+              params=params).json()
+            higherazimuthoutput = int(response['outputs']['ac_annual'])
+            
         params['azimuth'] = str(azimuth - 5)
         response = requests.get(
           f"https://developer.nrel.gov/api/pvwatts/v8.json",
           params=params).json()
         lowerazimuthoutput = int(response['outputs']['ac_annual'])
-        print(f'azi: {higherazimuthoutput}')
-        print(f'azi: {lowerazimuthoutput}')
-        print(f'azi: {ac_annual}')
-        if (ac_annual >= lowerazimuthoutput) and (ac_annual >= higherazimuthoutput):
-          params['azimuth'] = str(azimuth)
+
+        while lowerazimuthoutput > ac_annual:
+            print('moving to lower azi')
+            ac_annual = lowerazimuthoutput
+            azimuth = azimuth - 5
+            params['azimuth'] = str(azimuth - 5)
+            response = requests.get(
+              f"https://developer.nrel.gov/api/pvwatts/v8.json",
+              params=params).json()
+            lowerazimuthoutput = int(response['outputs']['ac_annual'])
+
+        params['azimuth'] = str(azimuth)
+
+        params['tilt'] = str(tilt + 1)
+        response = requests.get(
+          f"https://developer.nrel.gov/api/pvwatts/v8.json",
+          params=params).json()
+        highertiltoutput = int(response['outputs']['ac_annual'])
+
+        while highertiltoutput > ac_annual:
+            print('moving to higher tilt')
+            ac_annual = highertiltoutput
+            tilt = tilt + 1
+            if (tilt + 1) >= 91:
+              break
+            params['tilt'] = str(tilt + 1)
+            response = requests.get(
+              f"https://developer.nrel.gov/api/pvwatts/v8.json",
+              params=params).json()
+            highertiltoutput = int(response['outputs']['ac_annual'])
+            
+        params['tilt'] = str(tilt - 1)
+        response = requests.get(
+          f"https://developer.nrel.gov/api/pvwatts/v8.json",
+          params=params).json()
+        lowertiltoutput = int(response['outputs']['ac_annual'])
+
+        while lowertiltoutput > ac_annual:
+            print('moving to lower tilt')
+            ac_annual = lowertiltoutput
+            tilt = tilt - 1
+            if (tilt - 1) < 0:
+              break
+            params['tilt'] = str(tilt - 1)
+            response = requests.get(
+              f"https://developer.nrel.gov/api/pvwatts/v8.json",
+              params=params).json()
+            lowertiltoutput = int(response['outputs']['ac_annual'])
+
+        params['tilt'] = str(tilt)
+
+        if int(params['tilt']) == 0:
+          params['azimuth'] = 'any'
           break
-        elif higherazimuthoutput > ac_annual:
-          azimuth = azimuth + 5
-          params['azimuth'] = azimuth
-          ac_annual = higherazimuthoutput
-        else:
-          azimuth = azimuth - 5
-          params['azimuth'] = azimuth
-          ac_annual = lowerazimuthoutput
+
+        
       return HttpResponse(json.dumps({'optimal_tilt': str(params['tilt']), 'optimal_azimuth': str(params['azimuth']), 'ac_annual': str(ac_annual)}), content_type="application/json")
 
