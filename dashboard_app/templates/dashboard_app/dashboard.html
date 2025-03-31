@@ -35,9 +35,9 @@
   <div class="flex flex-col md:flex-row">
     <div id="map" class="md:h-[400px] max-w-[1098px] w-full h-[200px]"></div>
     <form id="form" class="flex flex-col p-[1rem] bg-rust max-w-[1241px] justify-between items-stretch">
-      <div class="flex">
-        <div class="flex flex-col w-1/2">
-          <div class="text-center">
+      <div class="flex flex-col">
+        <div class="flex flex-row">
+          <div class="text-center w-1/2">
             <label class="text-rose-200" for="system_capacity">system capacity (kWh) 
               <div class="tooltip"><img 
                 src="{% static 'images/tooltip.svg' %}"
@@ -49,7 +49,7 @@
             </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="500000" id="system_capacity" name="system_capacity">
           </div>
-          <div class="text-center">
+          <div class="text-center w-1/2">
             <label class="text-rose-200" for="tilt">Tilt (degrees) 
               <div class="tooltip"><img 
                 src="{% static 'images/tooltip.svg' %}"
@@ -62,8 +62,8 @@
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="0" max="90" id="tilt" name="tilt">
           </div>
         </div>
-        <div class="flex flex-col w-1/2">
-          <div class="text-center">
+        <div class="flex flex-row">
+          <div class="text-center w-1/2">
             <label class="text-rose-200" for="losses">Losses (precentage) 
               <div class="tooltip"><img 
                 src="{% static 'images/tooltip.svg' %}"
@@ -75,7 +75,7 @@
             </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" min="-5" max='95' id="losses" name="losses">
           </div>
-          <div class="text-center">
+          <div class="text-center w-1/2">
             <label class="text-rose-200" for="azimuth">Azimuth (degrees) 
               <div class="tooltip"><img 
                 src="{% static 'images/tooltip.svg' %}"
@@ -89,9 +89,9 @@
           </div>
         </div>
       </div>
-      <div class="flex">
-        <div class="flex flex-col w-1/2">
-          <div class="text-center">
+      <div class="flex flex-col">
+        <div class="flex flex-row">
+          <div class="text-center w-1/2">
             <label class="text-rose-200" for="lat">Latitude 
               <div class="tooltip"><img 
                 src="{% static 'images/tooltip.svg' %}"
@@ -103,7 +103,21 @@
             </label>
             <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="number" step=".00001" min="-90" max="90" id="lat" name="lat">
           </div>
-          <div class="text-center">
+          <div class="text-center w-1/2">
+            <label class="text-rose-200" for="lon">Longitude 
+              <div class="tooltip"><img 
+                src="{% static 'images/tooltip.svg' %}"
+                alt='tool tip image'
+                width="15"
+                heigth="15"/>
+                <span class="tooltiptext">Range -180 to 180 with up to five decimal place precision</span>
+              </div>
+            </label>
+            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="numer" step='.00001' min="-180" max="180" id="lon" name="lon">
+          </div>
+        </div>
+        <div class="flex flex-row">
+          <div class="text-center w-1/2">
             <label class="text-rose-200" for="module_type">module type 
               <div class="tooltip"><img 
                 src="{% static 'images/tooltip.svg' %}"
@@ -119,21 +133,7 @@
               <option value="2">Thin Film</option>
             </select>
           </div>
-        </div>
-        <div class="flex flex-col w-1/2">
-          <div class="text-center">
-            <label class="text-rose-200" for="lon">Longitude 
-              <div class="tooltip"><img 
-                src="{% static 'images/tooltip.svg' %}"
-                alt='tool tip image'
-                width="15"
-                heigth="15"/>
-                <span class="tooltiptext">Range -180 to 180 with up to five decimal place precision</span>
-              </div>
-            </label>
-            <input class='border p-2 w-full bg-red-300 rounded-s-sx' type="numer" step='.00001' min="-180" max="180" id="lon" name="lon">
-          </div>
-          <div class="text-center">
+          <div class="text-center w-1/2">
             <label class="text-rose-200" for="array_type">array type <div class="tooltip"><img 
               src="{% static 'images/tooltip.svg' %}"
               alt='tool tip image'
