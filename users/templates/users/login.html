@@ -1,14 +1,27 @@
 {% extends 'users/layout.html' %}
 
 {% block body %}
+  <div style="margin-top: 250px; display:flex; flex-direction: column; justify-content: center;">
+  <div style="text-align: center; font-size: larger; color: brown;">This is a bare bones full-stack up with authentication, sessions, database, and API integration for obtaining expected annual energy output of a photovoltaic array based on system specifications, location and orientation. <br>
+    <br>Feel free to create a quick account and and try it out. <br>
+    <br>You can save system configurations and reference them later. <br>
+  </div>
   {% if message %}
-    <div>{{message}}</div>
+    <div style="text-align: center; margin: 10px;">{{message}}</div>
   {% endif %}
-  <form action="{% url 'users:login' %}" method="post">
+  <form style="display: flex; flex-direction: column;" action="{% url 'users:login' %}" method="post">
     {% csrf_token %}
+    <div style="display: flex; justify-content: center; margin: 5px;">
     <input type="text" name="username" placeholder="username">
     <input type="password" name="password" placeholder="password">
-    <input type="submit" value="login">
+    </div>
+    <div style="display: flex; justify-content: center; margin: 5px;">
+    <input style="width: 100px; margin: 5px;" type="submit" value="Login">
+    <button style="width: 100px; align-self: center;">
+      <a href="{% url 'users:signup' %}">Creat Account</a>
+    </button>
+    </div>
   </form>
-  <a href="{% url 'users:signup' %}">Creat Account</a>
+  </div>
+  
 {% endblock %}
