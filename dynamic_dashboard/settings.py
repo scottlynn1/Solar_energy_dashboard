@@ -28,10 +28,12 @@ LOGIN_URL=reverse_lazy('login')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = bool(int(os.environ.get('DEBUG')))
 
-ALLOWED_HOSTS = ['*']
-
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ["project2.scottlynn.live", "www.project2.scottlynn.live"]
 
 # Application definition
 
@@ -55,6 +57,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if not DEBUG:
+  SESSION_COOKIE_DOMAIN = ".project2.scottlynn.live"
+  USE_X_FORWARDED_HOST = True
+  SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+  CSRF_TRUSTED_ORIGINS = [
+      'https://project2.scottlynn.live',
+      'https://www.project2.scottlynn.live',
+  ]
 
 ROOT_URLCONF = 'dynamic_dashboard.urls'
 
@@ -80,10 +91,19 @@ WSGI_APPLICATION = 'dynamic_dashboard.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+
+if DEBUG:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+else:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/data/db.sqlite3',
     }
 }
 
@@ -122,9 +142,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
-
+STATIC_URL = '/static/'
+if not DEBUG:
+  STATIC_ROOT = '/app/staticfiles'
+else:
+  STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

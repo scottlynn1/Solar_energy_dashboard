@@ -1,0 +1,9 @@
+images/
+node_modules/
+pytest.ini
+README.md
+.env
+.git
+.gitignore
+Dockerfile
+db.sqlite3
