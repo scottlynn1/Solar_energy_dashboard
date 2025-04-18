@@ -2,10 +2,10 @@
 
 {% block body %}
   {% if message %}
-    <div>{{message}}</div>
+    <div style="text-align: center; margin: auto;">{{message}}</div>
   {% endif %}
-  <h2>Sign up</h2>
-  <form method="post">
+  <h2 style="text-align: center; margin: auto;">Sign up</h2>
+  <form style="text-align: center; margin: auto;" method="post">
     {% csrf_token %}
     {{ form }}
     <button type="submit">Sign Up</button>
